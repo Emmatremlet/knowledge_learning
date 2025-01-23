@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un produit
+{% endblock %}
+
+{% block body %}
+	<div class="container theme">
+		<div class="gap-3 d-flex justify-content-between align-items-center">
+			<h2 class="col-5">Thèmes</h2>
+			<a class="btn btn-primary" href="#add-theme">Ajouter un thème</a>
+		</div>
+		<div class="container mt-5">
+			<div class="row gap-3 d-flex justify-content-center align-items-center">
+				{% for theme in themes %}
+					<div class="card" style="width: 18rem;">
+						<div class="card-body">
+							<h5 class="card-title">{{ theme.name }}</h5>
+							<div
+								class="d-flex justify-content-center align-items-center gap-2">
+								{# <a href="{{ path('theme', {id: theme.id}) }}" class="btn btn-primary">Voir</a> #}
+								<a class="btn btn-success text-nowrap" href="{{ path('theme_edit', { id: theme.id }) }}">Modifier</a>
+								<a class="btn btn-danger text-nowrap" href="{{ path('theme_delete', { id: theme.id }) }}">Supprimer</a>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="container mt-5" id="add-theme">
+			<h1 class="mb-4 text-center">Ajouter un thème</h1>
+
+			<div class="card shadow p-4">
+				{{ form_start(form, { attr: { class: 'row g-3' } }) }}
+
+				<div class="col-md-6">
+					{{ form_row(form.name, { 
+                label_attr: { class: 'form-label' }, 
+                attr: { class: 'form-control' } 
+            }) }}
+				</div>
+
+				<div class="col-md-6">
+					{{ form_row(form.description, { 
+                label_attr: { class: 'form-label' }, 
+                attr: { class: 'form-control' } 
+            }) }}
+				</div>
+
+				<div class="col-12 text-center">
+					<button type="submit" class="btn btn-primary w-50">Enregistrer le thème</button>
+				</div>
+
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
