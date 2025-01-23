@@ -6,26 +6,26 @@
 {% block body %}
 	<div>
 		<h2>
-			Nos produits phares !
+			Nos différents cours !
 		</h2>
-		{# <div class="container mt-5">
-			<div class="row gap-5 d-flex justify-content-center align-items-center">
-				{% for product in products %}
-					<div class="card" style="width: 18rem;">
-						<img src="{{ asset('images/' ~ product.image) }}" class="card-img-top w-75 d-flex justify-content-center align-items-center mx-auto" alt="sweat noir à capuche">
-						<div class="card-body">
-							<h5 class="card-title">{{ product.name }}</h5>
-							<p class="card-text text-end">
-								{{ product.price }}
-								€</p>
-							{% if app.user %}
-								<a href="{{ path('product', {id: product.id}) }}" class="btn btn-primary d-flex justify-content-center align-items-center w-25 px-5 mx-auto">Voir</a>
-							{% endif %}
+		<div class="container mt-5">
+			<div class="row gap-3 d-flex justify-content-center align-items-center">
+				{% for theme in themes %}
+					<div class="card d-flex justify-content-center align-itemms-center mx-auto" style="width: 20rem; height:20rem; background-color: #f1f8fc; color: #384050;">
+						<div class="card-body mt-4">
+							<h5 class="card-title text-center primary">{{ theme.name }}</h5>
+							{% for cursus in themes.cursuses %}
+								<p class="card-body text-center secondary">{{cursus.name}}</p>
+								<h6 class="card-body text-center">{{cursus.lessons.name}}</h6>
+							{% endfor %}
+							<div
+								class="d-flex justify-content-center align-items-center">{# <a href="{{ path('lesson', {id: lesson.id}) }}" class="btn btn-primary">Voir</a> #}
+							</div>
 						</div>
 					</div>
 				{% endfor %}
 			</div>
-		</div> #}
-	</div>
-</div>{% endblock %}
 
+		</div>
+	</div>
+{% endblock %}

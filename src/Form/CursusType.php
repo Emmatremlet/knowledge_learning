@@ -22,8 +22,7 @@ class CursusType extends AbstractType
             ->add('description')
             
             ->add('price', MoneyType::class, [
-                'label' => 'Prix',
-                'currency' => 'EUR',
+                'label' => 'Prix en ',
             ])
             ->add('theme', EntityType::class, [
                 'class' => Theme::class,

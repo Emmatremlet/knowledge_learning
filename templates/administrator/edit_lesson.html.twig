@@ -1,32 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier le produit :
+{% block title %}Modifier la leçon :
 	{{ lesson.name }}
 {% endblock %}
 
 {% block body %}
 	<div class="container mt-5">
-		<h1 class="text-center">Modifier la leçon</h1>
+		<h1 class="text-center primary">Modifier la leçon</h1>
 
-		<div class="card shadow p-4">
+		<div class="card shadow p-4" style="background-color: #f1f8fc; color: #384050;">
 			{{ form_start(form, { attr: { class: 'row g-3' } }) }}
 
 			<div class="col-md-6">
 				{{ form_row(form.name, {
-                    label_attr: { class: 'form-label' },
+                    label_attr: { class: 'form-label secondary' },
                     attr: { class: 'form-control' }
                 }) }}
 			</div>
 
 			<div class="col-md-6">
 				{{ form_row(form.description, {
-                    label_attr: { class: 'form-label' },
+                    label_attr: { class: 'form-label secondary' },
+                    attr: { class: 'form-control' }
+                }) }}
+			</div>
+			<div class="col-md-6">
+				{{ form_row(form.videoUrl, {
+                    label_attr: { class: 'form-label secondary' },
+                    attr: { class: 'form-control' }
+                }) }}
+			</div>
+			<div class="col-md-6">
+				{{ form_row(form.cursus, {
+                    label_attr: { class: 'form-label secondary' },
+                    attr: { class: 'form-control' }
+                }) }}
+			</div>
+			<div class="col-md-6">
+				{{ form_row(form.price, {
+                    label_attr: { class: 'form-label secondary' },
                     attr: { class: 'form-control' }
                 }) }}
 			</div>
 
+
 			<div class="col-12 text-center">
-				<button type="submit" class="btn btn-primary w-50">Enregistrer les modifications</button>
+				<button type="submit" class="button w-50">Enregistrer les modifications</button>
 			</div>
 
 			{{ form_end(form) }}

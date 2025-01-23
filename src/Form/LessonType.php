@@ -22,8 +22,8 @@ class LessonType extends AbstractType
             ->add('description')
             ->add('videoUrl')
             ->add('price', MoneyType::class, [
-                'label' => 'Prix',
-                'currency' => 'EUR',
+                'label' => 'Prix en ',
+
             ])
             ->add('cursus', EntityType::class, [
                 'class' => Cursus::class,

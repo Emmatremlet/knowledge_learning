@@ -1,26 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajouter un produit
+{% block title %}Ajouter un cursus
 {% endblock %}
 
 {% block body %}
 	<div class="container mx-1 cursus">
 		<div class="gap-3 d-flex justify-content-between align-items-center">
-			<h2 class="col-5">Cursus</h2>
-			<a class="btn btn-primary" href="#add-cursus">Ajouter un cursus</a>
+			<h2 class="col-5 primary">Cursus</h2>
+			<a class="btn button" href="#add-cursus">Ajouter un cursus</a>
 		</div>
+
 		<div class="container mt-5">
 			<div class="row gap-3 d-flex justify-content-center align-items-center">
 				{% for cursus in cursuses %}
-					<div class="card d-flex justify-content-center align-itemms-center mx-auto" style="width: 20rem; height:15rem;">
+					<div class="card d-flex justify-content-center align-items-center mx-auto" style="width: 20rem; height:15rem; background-color: #f1f8fc; color: #384050;">
 						<div class="card-body mt-4">
-							<h5 class="card-title text-center">{{ cursus.name }}</h5>
-							<p class="card-body text-center">{{cursus.theme.name}}</p>
-							<div
-								class="d-flex justify-content-center align-items-center">
-								{# <a href="{{ path('cursus', {id: cursus.id}) }}" class="btn btn-primary">Voir</a> #}
-								<a class="btn btn-success text-nowrap position-absolute bottom-0 end-50 mb-3 me-4" href="{{ path('cursus_edit', { id: cursus.id }) }}">Modifier</a>
-								<a class="btn btn-danger text-nowrap position-absolute bottom-0 end-0 mb-3 me-5" href="{{ path('cursus_delete', { id: cursus.id }) }}">Supprimer</a>
+							<h5 class="card-title text-center primary">{{ cursus.name }}</h5>
+							<p class="card-body text-center secondary">{{ cursus.theme.name }}</p>
+							<div class="d-flex justify-content-center align-items-center">
+								<a class="btn accent-green-button text-nowrap position-absolute bottom-0 end-50 mb-3 me-4" href="{{ path('cursus_edit', { id: cursus.id }) }}">Modifier</a>
+								<a class="btn accent-red-button text-nowrap position-absolute bottom-0 end-0 mb-3 me-5" href="{{ path('cursus_delete', { id: cursus.id }) }}">Supprimer</a>
 							</div>
 						</div>
 					</div>
@@ -28,33 +27,47 @@
 			</div>
 		</div>
 
+		<hr>
 		<div class="container mt-5" id="add-cursus">
-			<h1 class="mb-4 text-center">Ajouter un cursus</h1>
+			<h1 class="mb-4 text-center primary">Ajouter un cursus</h1>
 
-			<div class="card shadow p-4">
+			<div class="card shadow p-4" style="background-color: #f1f8fc; color: #384050;">
 				{{ form_start(form, { attr: { class: 'row g-3' } }) }}
 
 				<div class="col-md-6">
 					{{ form_row(form.name, { 
-                label_attr: { class: 'form-label' }, 
-                attr: { class: 'form-control' } 
-            }) }}
+                        label_attr: { class: 'form-label secondary' }, 
+                        attr: { class: 'form-control' } 
+                    }) }}
 				</div>
 
 				<div class="col-md-6">
 					{{ form_row(form.description, { 
-                label_attr: { class: 'form-label' }, 
-                attr: { class: 'form-control' } 
-            }) }}
+                        label_attr: { class: 'form-label secondary' }, 
+                        attr: { class: 'form-control' } 
+                    }) }}
+				</div>
+
+				<div class="col-md-6">
+					{{ form_row(form.theme, { 
+                        label_attr: { class: 'form-label secondary' }, 
+                        attr: { class: 'form-control' } 
+                    }) }}
+				</div>
+
+				<div class="col-md-6">
+					{{ form_row(form.price, { 
+                        label_attr: { class: 'form-label secondary' }, 
+                        attr: { class: 'form-control' } 
+                    }) }}
 				</div>
 
 				<div class="col-12 text-center">
-					<button type="submit" class="btn btn-primary w-50">Enregistrer le cursus</button>
+					<button type="submit" class="button btn w-50">Enregistrer le cursus</button>
 				</div>
 
 				{{ form_end(form) }}
 			</div>
 		</div>
 	</div>
-
 {% endblock %}

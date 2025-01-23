@@ -6,23 +6,23 @@
 {% block body %}
 	<div class="container lesson">
 		<div class="gap-3 d-flex justify-content-between align-items-center">
-			<h2 class="col-5">Cursus</h2>
-			<a class="btn btn-primary" href="#add-lesson">Ajouter une leçon</a>
+			<h2 class="col-5">Leçons</h2>
+			<a class="btn btn-primary button" href="#add-lesson">Ajouter une leçon</a>
 		</div>
 		<div class="container mt-5">
 			<div class="row gap-3 d-flex justify-content-center align-items-center">
 				{% for lesson in lessons %}
-					<div class="card d-flex justify-content-center align-itemms-center mx-auto" style="width: 20rem; height:20rem;">
+					<div class="card d-flex justify-content-center align-itemms-center mx-auto" style="width: 20rem; height:20rem; background-color: #f1f8fc; color: #384050;">
 						<div class="card-body mt-4">
-							<h5 class="card-title text-center">{{ lesson.name }}</h5>
-							<p class="card-body text-center">{{lesson.cursus.name}}</p>
+							<h5 class="card-title text-center primary">{{ lesson.name }}</h5>
+							<p class="card-body text-center secondary">{{lesson.cursus.name}}</p>
 							<h6 class="card-body text-center">{{lesson.cursus.theme.name}}</h6>
 
 							<div
 								class="d-flex justify-content-center align-items-center">
 								{# <a href="{{ path('lesson', {id: lesson.id}) }}" class="btn btn-primary">Voir</a> #}
-								<a class="btn btn-success text-nowrap position-absolute bottom-0 end-50 mb-3 me-4" href="{{ path('lesson_edit', { id: lesson.id }) }}">Modifier</a>
-								<a class="btn btn-danger text-nowrap position-absolute bottom-0 end-0 mb-3 me-5" href="{{ path('lesson_delete', { id: lesson.id }) }}">Supprimer</a>
+								<a class="btn btn-success accent-green-button text-nowrap position-absolute bottom-0 end-50 mb-3 me-4" href="{{ path('lesson_edit', { id: lesson.id }) }}">Modifier</a>
+								<a class="btn btn-danger accent-red-button text-nowrap position-absolute bottom-0 end-0 mb-3 me-5" href="{{ path('lesson_delete', { id: lesson.id }) }}">Supprimer</a>
 							</div>
 						</div>
 					</div>
@@ -34,25 +34,43 @@
 		<div class="container mt-5" id="add-lesson">
 			<h1 class="mb-4 text-center">Ajouter un lesson</h1>
 
-			<div class="card shadow p-4">
+			<div class="card shadow p-4" style="background-color: #f1f8fc; color: #384050;">
 				{{ form_start(form, { attr: { class: 'row g-3' } }) }}
 
 				<div class="col-md-6">
-					{{ form_row(form.name, { 
-                label_attr: { class: 'form-label' }, 
-                attr: { class: 'form-control' } 
-            }) }}
+					{{ form_row(form.name, {
+                    label_attr: { class: 'form-label secondary' },
+                    attr: { class: 'form-control' }
+                }) }}
 				</div>
 
 				<div class="col-md-6">
-					{{ form_row(form.description, { 
-                label_attr: { class: 'form-label' }, 
-                attr: { class: 'form-control' } 
-            }) }}
+					{{ form_row(form.description, {
+                    label_attr: { class: 'form-label secondary' },
+                    attr: { class: 'form-control' }
+                }) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_row(form.videoUrl, {
+                    label_attr: { class: 'form-label secondary' },
+                    attr: { class: 'form-control' }
+                }) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_row(form.cursus, {
+                    label_attr: { class: 'form-label secondary' },
+                    attr: { class: 'form-control' }
+                }) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_row(form.price, {
+                    label_attr: { class: 'form-label secondary' },
+                    attr: { class: 'form-control' }
+                }) }}
 				</div>
 
 				<div class="col-12 text-center">
-					<button type="submit" class="btn btn-primary w-50">Enregistrer la leçon</button>
+					<button type="submit" class="button btn btn-primary w-50">Enregistrer la leçon</button>
 				</div>
 
 				{{ form_end(form) }}
