@@ -17,14 +17,11 @@ class Purchase
     #[ORM\ManyToOne(inversedBy: 'purchases')]
     private ?User $user = null;
 
-    /**
-     * @Assert\Choice(choices={"lesson", "curriculum"}, message="The type must be either 'lesson' or 'curriculum'.")
-     * @ORM\Column(type="string", length=20)
-     */
-    private ?string $itempType = null;
+    #[ORM\ManyToOne(targetEntity: Lesson::class)]
+    private ?Lesson $lesson = null;
 
-    #[ORM\Column]
-    private ?int $itemId = null;
+    #[ORM\ManyToOne(targetEntity: Cursus::class)]
+    private ?Cursus $cursus = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $purchaseDate = null;
@@ -49,27 +46,25 @@ class Purchase
         return $this;
     }
 
-    public function getItempType(): ?string
+    public function getLesson(): ?Lesson
     {
-        return $this->itempType;
+        return $this->lesson;
     }
 
-    public function setItempType(string $itempType): static
+    public function setLesson(?Lesson $lesson): self
     {
-        $this->itempType = $itempType;
-
+        $this->lesson = $lesson;
         return $this;
     }
 
-    public function getItemId(): ?int
+    public function getCursus(): ?Cursus
     {
-        return $this->itemId;
+        return $this->cursus;
     }
 
-    public function setItemId(int $itemId): static
+    public function setCursus(?Cursus $cursus): self
     {
-        $this->itemId = $itemId;
-
+        $this->cursus = $cursus;
         return $this;
     }
 

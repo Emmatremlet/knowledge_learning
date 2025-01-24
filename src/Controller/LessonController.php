@@ -33,7 +33,7 @@ class LessonController extends AbstractController
             return $this->redirectToRoute('admin_lesson');
         }
 
-        return $this->render('administrator/dashboard_lesson.html.twig', [
+        return $this->render('administrator/contents/dashboard_lesson.html.twig', [
             'form' => $form->createView(),
             'lessons' => $lessons
         ]);
@@ -53,7 +53,7 @@ class LessonController extends AbstractController
             return $this->redirectToRoute('admin_lesson');
         }
 
-        return $this->render('administrator/edit_lesson.html.twig', [
+        return $this->render('administrator/contents/edit_lesson.html.twig', [
             'form' => $form->createView(),
             'lesson' => $lesson,
         ]);

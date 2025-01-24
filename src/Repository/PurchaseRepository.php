@@ -15,7 +15,15 @@ class PurchaseRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Purchase::class);
     }
-
+    
+    public function findByUser($user): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Purchase[] Returns an array of Purchase objects
 //     */

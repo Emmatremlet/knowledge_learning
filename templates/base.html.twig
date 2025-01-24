@@ -25,7 +25,7 @@
 				}
 
 				.secondary {
-					color: #00497c;
+					color: #00497c !important;
 				}
 
 				.accent-red {
@@ -47,6 +47,14 @@
 					background-color: #82b864;
 					border: none;
 					color: white;
+
+				}
+
+				.accent-blue-button {
+					background-color: none;
+					border: solid 1;
+					border-color: #00497c;
+					color: #00497c;
 
 				}
 
@@ -80,6 +88,25 @@
 					text-decoration: none;
 
 				}
+
+				.dropdown-menu .dropdown-menu {
+					margin-left: 0;
+					margin-right: 0;
+					left: 100%;
+					top: 0;
+				}
+
+				.dropdown-menu .dropdown-submenu:hover > .dropdown-menu {
+					display: block;
+				}
+
+				.dropdown-submenu {
+					position: relative;
+				}
+
+				.dropdown-submenu > a::after {
+					float: right;
+				}
 			</style>
 		{% endblock %}
 	</head>
@@ -105,7 +132,7 @@
 							</li>
 
 							<li class="nav-item">
-								<a class="nav-link secondary" href="#">Panier</a>
+								<a class="nav-link secondary" href="/cart">Panier</a>
 							</li>
 							{% if 'ROLE_ADMIN' in app.user.roles %}
 								<li class="nav-item dropdown">
@@ -113,17 +140,36 @@
 										Tableau de bord
 									</a>
 									<ul class="dropdown-menu">
-										<li>
-											<a class="dropdown-item accent-green" href="/dashboard/theme">Thèmes</a>
+										<li class="dropdown-submenu">
+											<a class="dropdown-item dropdown-toggle secondary" href="#" role="button" data-bs-toggle="dropdown">
+												Contenus
+											</a>
+											<ul class="dropdown-menu">
+												<li>
+													<a class="dropdown-item accent-green" href="/dashboard/theme">Thèmes</a>
+												</li>
+												<li>
+													<a class="dropdown-item accent-green" href="/dashboard/cursus">Cursus</a>
+												</li>
+												<li>
+													<a class="dropdown-item accent-green" href="/dashboard/lesson">Leçons</a>
+												</li>
+											</ul>
 										</li>
-										<li>
-											<a class="dropdown-item accent-green" href="/dashboard/cursus">Cursus</a>
+										<li class="dropdown-submenu">
+											<a class="dropdown-item secondary" href="/dashboard/users">
+												Utilisateurs
+											</a>
 										</li>
-										<li>
-											<a class="dropdown-item accent-green" href="/dashboard/lesson">Leçons</a>
+										<li class="dropdown-submenu">
+											<a class="dropdown-item secondary" href="/dashboard/purchases">
+												Achats
+											</a>
 										</li>
+
 									</ul>
 								</li>
+
 							{% endif %}
 							<li class="nav-item">
 								<a class="nav-link accent-red" href="{{ path('app_logout') }}">Déconnexion</a>
@@ -202,4 +248,4 @@ alert.addEventListener('transitionend', () => alert.remove());
 });
 		</script>
 	</html>
-</body></html>
+</body></html></body></html>

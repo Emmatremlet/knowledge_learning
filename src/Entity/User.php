@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -24,10 +25,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isActive = false;
+    #[ORM\Column]
+    private ?bool $isVerified = false;
 
     /**
      * @var list<string> The user roles
@@ -41,15 +40,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Purchase::class, mappedBy="user", cascade={"persist", "remove"})
-     */
-    private $purchases;
+    #[ORM\OneToMany(targetEntity: Purchase::class, mappedBy:"user", cascade:["persist", "remove"])]
+    private Collection $purchases;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Certification::class, mappedBy="user", cascade={"persist", "remove"})
-     */
-    private $certifications;
+    #[ORM\OneToMany(targetEntity: Certification::class, mappedBy:"user", cascade:["persist", "remove"])]
+    private Collection $certifications;
     
     public function __construct()
     {

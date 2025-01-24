@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'utilisateur :
+	{{ user.name }}
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h1 class="text-center primary">Modifier l'utilisateur</h1>
+
+		<div class="card shadow p-4" style="background-color: #f1f8fc; color: #384050;">
+			{{ form_start(form, { attr: { class: 'row g-3' } }) }}
+
+			<div class="row">
+				<div class="col-md-5 m-2">
+					{{ form_row(form.name, {
+						label_attr: { class: 'form-label secondary' },
+						attr: { class: 'form-control' }
+					}) }}
+				</div>
+				<div class="col-md-5 m-2">
+					{{ form_row(form.email, {
+						label_attr: { class: 'form-label secondary' },
+						attr: { class: 'form-control' }
+					}) }}
+				</div>
+				<div class="col-md-5 m-2">
+					{{ form_row(form.roles, {
+						label_attr: { class: 'form-label secondary' },
+						attr: { class: 'form-control' }
+					}) }}
+				</div>
+				<div class="col-md-5 m-5">
+					{{ form_row(form.isVerified, {
+						label_attr: { class: 'form-label secondary' },
+						attr: { class: 'form-check-input' }
+					}) }}
+				</div>
+			</div>
+
+			<div class="col-12 text-center">
+				<button type="submit" class="w-50 button">Enregistrer les modifications</button>
+			</div>
+
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock %}

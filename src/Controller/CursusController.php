@@ -33,7 +33,7 @@ class CursusController extends AbstractController
             return $this->redirectToRoute('admin_cursus');
         }
 
-        return $this->render('administrator/dashboard_cursus.html.twig', [
+        return $this->render('administrator/contents/dashboard_cursus.html.twig', [
             'form' => $form->createView(),
             'cursuses' => $cursuses
         ]);
@@ -53,7 +53,7 @@ class CursusController extends AbstractController
             return $this->redirectToRoute('admin_cursus');
         }
 
-        return $this->render('administrator/edit_cursus.html.twig', [
+        return $this->render('administrator/contents/edit_cursus.html.twig', [
             'form' => $form->createView(),
             'cursus' => $cursus,
         ]);

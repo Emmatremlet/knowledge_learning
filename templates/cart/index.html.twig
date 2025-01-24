@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre Panier
+{% endblock %}
+
+{% block body %}
+	<div class="container my-5">
+		<h2 class="text-center primary mb-4">Votre Panier</h2>
+
+		{% if purchases|length > 0 %}
+			<table class="table table-striped">
+				<thead >
+					<tr >
+						<th class="secondary">Type</th>
+						<th class="secondary">Nom</th>
+						<th class="secondary">Prix</th>
+						<th class="secondary">Date d'ajout</th>
+						<th class="secondary">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for purchase in purchases %}
+						<tr> 
+							{% if purchase.lesson %}
+								<td class="secondary">Leçon</td>
+								<td class="secondary">
+									{{ purchase.lesson.name }}
+								</td>
+							{% elseif purchase.cursus %}
+								<td class="secondary">Cursus</td>
+								<td class="secondary">
+									{{ purchase.cursus.name }}
+								</td>
+							{% endif %}
+							<td class="secondary">{{ purchase.totalPrice }}
+								€</td>
+							<td class="secondary">{{ purchase.purchaseDate|date('d/m/Y H:i') }}</td>
+							<td class="secondary">
+								<a href="{{ path('cart_remove', { id: purchase.id }) }}" class="btn accent-red-button btn-danger btn-sm">Retirer</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="row mt-4 d-flex justify-content-between">
+				<div class="col-6">
+					<a href="{{ path('themes') }}" class="btn accent-blue-button btn-lg">Continuer mes achats</a>
+				</div>
+				<div class="col-6 text-end">
+					<button id="checkout-button" class="btn btn-success accent-green-button btn-lg">Finaliser ma commande</button>
+				</div>
+			</div>
+		{% else %}
+			<p class="text-center secondary">Votre panier est vide.</p>
+		{% endif %}
+	</div>
+{% endblock %}

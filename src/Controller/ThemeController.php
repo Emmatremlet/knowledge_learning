@@ -33,7 +33,7 @@ class ThemeController extends AbstractController
             return $this->redirectToRoute('admin_theme');
         }
 
-        return $this->render('administrator/dashboard_theme.html.twig', [
+        return $this->render('administrator/contents/dashboard_theme.html.twig', [
             'form' => $form->createView(),
             'themes' => $themes
         ]);
@@ -53,7 +53,7 @@ class ThemeController extends AbstractController
             return $this->redirectToRoute('admin_theme');
         }
 
-        return $this->render('administrator/edit_theme.html.twig', [
+        return $this->render('administrator/contents/edit_theme.html.twig', [
             'form' => $form->createView(),
             'theme' => $theme,
         ]);

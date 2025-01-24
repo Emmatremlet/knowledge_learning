@@ -34,7 +34,7 @@
 													<span class="text-muted">{{ lesson.price }}
 														€</span>
 													<div class="mt-2">
-														<a href="/lesson/add/{{ lesson.id }}" class="btn btn-outline-success w-100">Ajouter cette leçon au panier</a>
+														<a href="/cart/add/lesson/{{ lesson.id }}" class="btn btn-outline-success w-100">Ajouter cette leçon au panier</a>
 													</div>
 												</li>
 											{% endfor %}
@@ -45,7 +45,7 @@
 									class="my-4" style="border-top: 2px dashed #384050;">
 
 									<div class="text-center">
-										<a href="/cursus/add/{{ cursus.id }}" class="btn btn-primary w-100 py-2" style="font-size: 1.1rem;">
+										<a href="/cart/add/cursus/{{ cursus.id }}" class="btn btn-primary w-100 py-2" style="font-size: 1.1rem;">
 											Ajouter le cursus au panier
 										</a>
 									</div>

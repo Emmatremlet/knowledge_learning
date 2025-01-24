@@ -39,8 +39,15 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/dashboard/theme, roles: ROLE_ADMIN }
+        - { path: ^/dashboard/cursus, roles: ROLE_ADMIN }
+        - { path: ^/dashboard/lesson, roles: ROLE_ADMIN }
+        - { path: ^/edit/lesson/\d+, roles: ROLE_ADMIN }
+        - { path: ^/edit/cursus/\d+, roles: ROLE_ADMIN }
+        - { path: ^/edit/theme/\d+, roles: ROLE_ADMIN }
+        - { path: ^/purchase, roles: ROLE_USER }
+        - { path: ^/theme, roles: ROLE_USER }
+        - { path: ^/theme/\d+, roles: ROLE_USER }
 
 when@test:
     security:
