@@ -76,6 +76,28 @@ class ThemeController extends AbstractController
         $this->addFlash('success', 'Thème supprimé avec succès !');
         return $this->redirectToRoute('admin_theme');
     }
+    
+    #[Route('/theme/{id}', name: 'theme')]
+    public function show(Theme $theme): Response
+    {
+        // Récupérer tous les cursus et leurs leçons associés au thème
+        $cursuses = $theme->getCursuses();
+
+        return $this->render('theme/show.html.twig', [
+            'theme' => $theme,
+            'cursuses' => $cursuses,
+        ]);
+    }
+
+    #[Route('/theme', name: 'themes')]
+    public function list(ThemeRepository $themeRepository): Response
+    {
+        $themes = $themeRepository->getAll();
+
+        return $this->render('theme/list.html.twig', [
+            'themes' => $themes,
+        ]);
+    }
 }
 
 ?>

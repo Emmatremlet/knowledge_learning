@@ -16,6 +16,32 @@ class ThemeRepository extends ServiceEntityRepository
         parent::__construct($registry, Theme::class);
     }
 
+    /**
+     * Retourne les deux thèmes avec le prix total des cursus le plus élevé
+     */
+    public function findTopTwoThemesByTotalCursusPrice(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t, SUM(c.price) as total_price')
+            ->leftJoin('t.cursuses', 'c')
+            ->groupBy('t.id')
+            ->orderBy('total_price', 'DESC')
+            ->setMaxResults(2)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getAll(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->leftJoin('t.cursuses', 'c')
+            ->addSelect('c')
+            ->leftJoin('c.lessons', 'l')
+            ->addSelect('l')
+            ->getQuery()
+            ->getResult();
+    }
+    
 //    /**
 //     * @return Theme[] Returns an array of Theme objects
 //     */
