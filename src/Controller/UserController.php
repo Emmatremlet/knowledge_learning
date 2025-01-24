@@ -13,18 +13,49 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 
 class UserController extends AbstractController
 {
     #[Route('/dashboard/users', name: 'admin_user_list')]
-    public function list(UserRepository $userRepository): Response
+    public function list(UserRepository $userRepository,  Request $request): Response
     {
         $users = $userRepository->findAll();
 
+        $user = new User();
+        $form = $this->createFormBuilder($user)
+            ->add('name', TextType::class, ['label' => 'Nom'])
+            ->add('email', EmailType::class, ['label' => 'Email'])
+            ->add('roles', ChoiceType::class, [
+                'choices' => [
+                    'Utilisateur' => 'ROLE_USER',
+                    'Administrateur' => 'ROLE_ADMIN',
+                ],
+                'multiple' => true,
+                'expanded' => true,
+            ])
+            ->add('isVerified', CheckboxType::class, [
+                'label' => 'Compte activé',
+                'required' => false,
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Utilisateur ajouté avec succès.');
+            return $this->redirectToRoute('admin_user_list');
+        }
+
         return $this->render('administrator/users/dashboard_user.html.twig', [
             'users' => $users,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -72,4 +103,5 @@ class UserController extends AbstractController
         $this->addFlash('success', 'Utilisateur supprimé avec succès.');
         return $this->redirectToRoute('admin_user_list');
     }
+    
 }

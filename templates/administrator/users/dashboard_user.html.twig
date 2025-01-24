@@ -5,37 +5,88 @@
 
 {% block body %}
 	<div class="container my-5">
-		<h2 class="text-center primary mb-4">Liste des utilisateurs</h2>
+		<div class="gap-3 d-flex justify-content-between align-items-center">
+			<h2 class="col-5 primary">Utilisateurs</h2>
+			<a class="btn button" href="#add-user">Ajouter un utilisateur</a>
+		</div>
 
-		<table class="table table-striped table-bordered">
-			<thead class="table-primary">
-				<tr>
-					<th>ID</th>
-					<th>Nom</th>
-					<th>Email</th>
-					<th>Roles</th>
-					<th>Activé</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for user in users %}
+		<hr>
+		<div class="container mt-5" id="add-user">
+
+			<h2 class="text-center primary mb-4">Liste des utilisateurs</h2>
+
+			<table class="table table-striped table-bordered">
+				<thead class="table-primary">
 					<tr>
-						<td>{{ user.id }}</td>
-						<td>{{ user.name }}</td>
-						<td>{{ user.email }}</td>
-						<td>{{ user.roles|join(', ') }}</td>
-						<td>{{ user.isVerified ? 'Oui' : 'Non' }}</td>
-						<td>
-							<a href="{{ path('admin_user_edit', { id: user.id }) }}" class="btn btn-warning btn-sm">Modifier</a>
-							<form action="{{ path('admin_user_delete', { id: user.id }) }}" method="post" class="d-inline">
-								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-								<button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
-							</form>
-						</td>
+						<th>ID</th>
+						<th>Nom</th>
+						<th>Email</th>
+						<th>Roles</th>
+						<th>Activé</th>
+						<th>Actions</th>
 					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{% for user in users %}
+						<tr>
+							<td>{{ user.id }}</td>
+							<td>{{ user.name }}</td>
+							<td>{{ user.email }}</td>
+							<td>{{ user.roles|join(', ') }}</td>
+							<td>{{ user.isVerified ? 'Oui' : 'Non' }}</td>
+							<td>
+								<a href="{{ path('admin_user_edit', { id: user.id }) }}" class="btn btn-warning btn-sm">Modifier</a>
+								<form action="{{ path('admin_user_delete', { id: user.id }) }}" method="post" class="d-inline">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+									<button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+								</form>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="container mx-1 mt-5 user">
+            <div class="card mt-5 shadow p-4" style="background-color: #f1f8fc; color: #384050;">
+				<h1 class="mb-4 text-center primary">Ajouter un utilisateur</h1>
+				{{ form_start(form, { attr: { class: 'row g-3' } }) }}
+
+				<div class="col-md-6">
+					{{ form_row(form.name, { 
+                        label_attr: { class: 'form-label secondary' }, 
+                        attr: { class: 'form-control' } 
+                    }) }}
+				</div>
+
+				<div class="col-md-6">
+					{{ form_row(form.email, { 
+                        label_attr: { class: 'form-label secondary' }, 
+                        attr: { class: 'form-control' } 
+                    }) }}
+				</div>
+
+				<div class="col-md-6">
+					{{ form_row(form.roles, { 
+                        label_attr: { class: 'form-label secondary' }, 
+                        attr: { class: 'form-control' } 
+                    }) }}
+				</div>
+
+				<div class="col-md-6">
+					{{ form_row(form.isVerified, { 
+                        label_attr: { class: 'form-label secondary' }, 
+                        attr: { class: 'form-check-input' } 
+                    }) }}
+				</div>
+
+				<div class="col-12 text-center">
+					<button type="submit" class="button btn w-50">Enregistrer l'utilisateur</button>
+				</div>
+
+				{{ form_end(form) }}
+			</div>
+		</div>
 	</div>
+
 {% endblock %}

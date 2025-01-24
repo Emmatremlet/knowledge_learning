@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'achat
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h1 class="text-center primary">Modifier l'achat</h1>
+
+		<div class="card shadow p-4" style="background-color: #f1f8fc; color: #384050;">
+			{{ form_start(form, { attr: { class: 'row g-3' } }) }}
+
+			<div class="col-md-6">
+				{{ form_row(form.itemType, {
+                label_attr: { class: 'form-label secondary' },
+                attr: { class: 'form-control' }
+            }) }}
+			</div>
+			<div class="col-md-6">
+				{{ form_row(form.itemId, {
+                label_attr: { class: 'form-label secondary' },
+                attr: { class: 'form-control' }
+            }) }}
+			</div>
+			<div class="col-md-6">
+				{{ form_row(form.purchaseDate, {
+                label_attr: { class: 'form-label secondary' },
+                attr: { class: 'form-control' }
+            }) }}
+			</div>
+			<div class="col-md-6">
+				{{ form_row(form.totalPrice, {
+                label_attr: { class: 'form-label secondary' },
+                attr: { class: 'form-control' }
+            }) }}
+			</div>
+
+			<div class="col-12 text-center">
+				<button type="submit" class="w-50 button">Enregistrer les modifications</button>
+			</div>
+
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock %}

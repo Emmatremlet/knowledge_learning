@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des achats
+{% endblock %}
+
+{% block body %}
+	<div class="container my-5">
+		<h2 class="text-center primary mb-4">Liste des achats</h2>
+
+		<table class="table table-striped table-bordered">
+			<thead class="table-primary">
+				<tr>
+					<th>ID</th>
+					<th>Utilisateur</th>
+					<th>Type d'achat</th>
+					<th>ID de l'élément</th>
+					<th>Date d'achat</th>
+					<th>Prix total</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for purchase in purchases %}
+					<tr>
+						<td>{{ purchase.id }}</td>
+						<td>{{ purchase.user.name }}</td>
+						<td>{{ purchase.itemType|capitalize }}</td>
+						<td>{{ purchase.itemId }}</td>
+						<td>{{ purchase.purchaseDate|date('d/m/Y H:i') }}</td>
+						<td>{{ purchase.totalPrice }}
+							€</td>
+						<td>
+							<a href="{{ path('admin_purchase_edit', { id: purchase.id }) }}" class="btn btn-warning btn-sm">Modifier</a>
+							<form action="{{ path('admin_purchase_delete', { id: purchase.id }) }}" method="post" class="d-inline">
+								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ purchase.id) }}">
+								<button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+							</form>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}
