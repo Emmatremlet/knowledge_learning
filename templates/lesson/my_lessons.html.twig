@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Leçons
+{% endblock %}
+
+{% block body %}
+	<div class="container my-5">
+		<h1 class="text-center primary">Mes Leçons</h1>
+
+		<div class="row">
+			{% if lessons|length > 0 %}
+				{% for lesson in lessons %}
+					<div class="col-md-4 mb-4">
+						<div class="card shadow" style="background-color: #f1f8fc; color: #384050;">
+							<div class="card-body">
+								<h5 class="card-title primary">{{ lesson.name }}</h5>
+								<p class="card-text secondary">{{ lesson.description }}</p>
+								<a href="{{ path('lesson_detail', { id: lesson.id }) }}" class="btn button">Voir la leçon</a>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			{% else %}
+				<p class="text-center my-5 secondary">Vous n'avez pas encore de leçons.</p>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

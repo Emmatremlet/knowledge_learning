@@ -27,6 +27,7 @@ class PurchaseController extends AbstractController
         
         return $this->render('cart/index.html.twig', [
             'purchases' => $purchases,
+            'stripe_public_key' => $_ENV['STRIPE_PUBLIC_KEY'] ?? null,
         ]);
     }
 

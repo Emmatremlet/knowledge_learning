@@ -76,6 +76,26 @@ class CursusController extends AbstractController
         $this->addFlash('success', 'Thème supprimé avec succès !');
         return $this->redirectToRoute('admin_cursus');
     }
+
+    #[Route('/cursus/{id}', name: 'cursus_detail')]
+    public function cursusDetail(Cursus $cursus): Response
+    {
+        $user = $this->getUser();
+
+        // Vérifiez si l'utilisateur a acheté ce cursus
+        $hasAccess = $user->getPurchases()->exists(function ($key, $purchase) use ($cursus) {
+            return $purchase->getCursus() === $cursus;
+        });
+
+        if (!$hasAccess) {
+            $this->addFlash('danger', 'Vous n\'avez pas accès à ce cursus.');
+            return $this->redirectToRoute('cart_index');
+        }
+
+        return $this->render('cursus/detail.html.twig', [
+            'cursus' => $cursus,
+        ]);
+    }
 }
 
 ?>

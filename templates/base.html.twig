@@ -130,7 +130,6 @@
 							<li class="nav-item">
 								<a class="nav-link secondary text-nowrap" href="/theme">Nos cours</a>
 							</li>
-
 							<li class="nav-item">
 								<a class="nav-link secondary" href="/cart">Panier</a>
 							</li>
@@ -171,9 +170,27 @@
 								</li>
 
 							{% endif %}
-							<li class="nav-item">
-								<a class="nav-link accent-red" href="{{ path('app_logout') }}">Déconnexion</a>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle secondary" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									Mon profil
+								</a>
+								<ul class="dropdown-menu">
+									<li class="dropdown-item">
+										<a class="dropdown-item secondary" href="/my-lessons">
+											Mes leçons
+										</a>
+									</li>
+									<li class="dropdown-item">
+										<a class="dropdown-item secondary" href="#">
+											Mes certifications
+										</a>
+									</li>
+									<li class="dropdown-item">
+										<a class="dropdown-item accent-red" href="{{ path('app_logout') }}">Déconnexion</a>
+									</li>
+								</ul>
 							</li>
+
 						{% else %}
 							<li class="nav-item">
 								<a class="nav-link accent-green" href="{{ path('app_register') }}">Inscription</a>

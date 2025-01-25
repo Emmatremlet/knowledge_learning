@@ -76,6 +76,25 @@ class LessonController extends AbstractController
         $this->addFlash('success', 'Lesson supprimé avec succès !');
         return $this->redirectToRoute('admin_lesson');
     }
+
+    #[Route('/lesson/{id}', name: 'lesson_detail')]
+    public function lessonDetail(Lesson $lesson): Response
+    {
+        $user = $this->getUser();
+
+        $hasAccess = $user->getPurchases()->exists(function ($key, $purchase) use ($lesson) {
+            return $purchase->getLesson() === $lesson;
+        });
+
+        if (!$hasAccess) {
+            $this->addFlash('danger', 'Vous n\'avez pas accès à cette leçon.');
+            return $this->redirectToRoute('cart_index');
+        }
+
+        return $this->render('lesson/detail.html.twig', [
+            'lesson' => $lesson,
+        ]);
+    }
 }
 
 ?>

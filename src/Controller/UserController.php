@@ -13,10 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
-
+use Symfony\Component\Form\Extension\Core\Type\EntityType;
 
 class UserController extends AbstractController
 {
@@ -102,6 +100,22 @@ class UserController extends AbstractController
 
         $this->addFlash('success', 'Utilisateur supprimé avec succès.');
         return $this->redirectToRoute('admin_user_list');
+    }
+
+    #[Route('/my-lessons', name: 'user_lessons')]
+    public function myLessons(): Response
+    {
+        $user = $this->getUser();
+
+        $lessons = array_map(function ($purchase) {
+            return $purchase->getLesson();
+        }, array_filter($user->getPurchases()->toArray(), function ($purchase) {
+            return $purchase->getItemType() === 'lesson';
+        }));
+
+        return $this->render('lesson/my_lessons.html.twig', [
+            'lessons' => $lessons,
+        ]);
     }
     
 }
