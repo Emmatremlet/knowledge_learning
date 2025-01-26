@@ -6,6 +6,7 @@ use App\Repository\CertificationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CertificationRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Certification extends BaseEntity
 {
     #[ORM\Id]

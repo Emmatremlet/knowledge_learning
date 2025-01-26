@@ -6,6 +6,7 @@ use App\Repository\LessonRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LessonRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Lesson extends BaseEntity
 {
     #[ORM\Id]

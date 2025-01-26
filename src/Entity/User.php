@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ORM\HasLifecycleCallbacks]
 class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUserInterface 
 {
     #[ORM\Id]
