@@ -19,8 +19,6 @@ class StripeService
 
     public function createCheckoutSession(array $lineItems, string $successUrl, string $cancelUrl): string
     {
-        dump($secretKey);
-        die();
         try {
             $session = $this->stripe->checkout->sessions->create([
                 'payment_method_types' => ['card'],

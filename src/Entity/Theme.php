@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ThemeRepository::class)]
-class Theme
+class Theme extends BaseEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,12 +26,6 @@ class Theme
      */
     #[ORM\OneToMany(targetEntity: Cursus::class, mappedBy: 'theme')]
     private Collection $cursuses;
-
-    /**
-     * @var Collection<int, Certification>
-     */
-    #[ORM\OneToMany(targetEntity: Certification::class, mappedBy: 'theme')]
-    private Collection $certifications;
 
     public function __construct()
     {
@@ -92,36 +86,6 @@ class Theme
             // set the owning side to null (unless already changed)
             if ($cursus->getTheme() === $this) {
                 $cursus->setTheme(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Certification>
-     */
-    public function getCertifications(): Collection
-    {
-        return $this->certifications;
-    }
-
-    public function addCertification(Certification $certification): static
-    {
-        if (!$this->certifications->contains($certification)) {
-            $this->certifications->add($certification);
-            $certification->setTheme($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCertification(Certification $certification): static
-    {
-        if ($this->certifications->removeElement($certification)) {
-            // set the owning side to null (unless already changed)
-            if ($certification->getTheme() === $this) {
-                $certification->setTheme(null);
             }
         }
 

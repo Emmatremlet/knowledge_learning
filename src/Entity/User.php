@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUserInterface 
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -152,5 +152,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getPurchases(): Collection
     {
         return $this->purchases;
+    }
+
+    public function getCertifications(): Collection
+    {
+        return $this->certifications;
     }
 }

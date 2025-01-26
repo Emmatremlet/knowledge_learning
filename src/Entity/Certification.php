@@ -6,7 +6,7 @@ use App\Repository\CertificationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CertificationRepository::class)]
-class Certification
+class Certification extends BaseEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -16,8 +16,8 @@ class Certification
     #[ORM\ManyToOne(inversedBy: 'certifications')]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'certifications')]
-    private ?Theme $theme = null;
+    #[ORM\ManyToOne]
+    private ?Cursus $cursus = null;
 
     #[ORM\Column]
     private ?bool $isValidated = null;
@@ -42,14 +42,14 @@ class Certification
         return $this;
     }
 
-    public function getTheme(): ?Theme
+    public function getCursus(): ?Cursus
     {
-        return $this->theme;
+        return $this->cursus;
     }
 
-    public function setTheme(?Theme $theme): static
+    public function setCursus(?Cursus $cursus): static
     {
-        $this->theme = $theme;
+        $this->cursus = $cursus;
 
         return $this;
     }

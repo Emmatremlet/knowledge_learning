@@ -57,8 +57,9 @@
 
 	<script src="https://js.stripe.com/v3/"></script>
 	<script>
-		const stripe = Stripe('{{ stripe_public_key }}');
 
+		const stripe = Stripe('{{ stripe_public_key }}');
+	
 		document.getElementById('checkout-button').addEventListener('click', () => {
 			fetch('{{ path('stripe_checkout') }}', {
 				method: 'POST',
@@ -78,6 +79,7 @@
 				alert('Une erreur technique est survenue. Veuillez réessayer.');
 			});
 		});
+
 	</script>
 
 {% endblock %}

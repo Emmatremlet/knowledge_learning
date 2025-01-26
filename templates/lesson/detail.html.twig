@@ -6,6 +6,13 @@
 
 {% block body %}
 	<div class="container my-5">
+		<div class="mb-4">
+			<a href="{{ path('user_lessons') }}" class="btn btn-outline-secondary">
+				<span class="me-2">&#8592;</span>
+				Retour à mes leçons
+			</a>
+		</div>
+
 		<h1 class="text-center primary mb-4">{{ lesson.name }}</h1>
 
 		<div class="card shadow-lg" style="background-color: #f1f8fc; color: #384050;">
@@ -13,12 +20,18 @@
 				<h2 class="card-title primary mb-3">Description</h2>
 				<p class="card-text">{{ lesson.description }}</p>
 
-				<h3 class="primary mt-4">Contenu</h3>
-				<p>{{ lesson.content }}</p>
+				<h3 class="primary mt-4">Video :
+				</h3>
+				<a href="{{lesson.videoURL}}">
+					(affichage de la vidéo)</a>
 
-				<div class="text-center mt-4">
-					<a href="/lesson/add-to-cart/{{ lesson.id }}" class="btn button w-50">Ajouter au panier</a>
-				</div>
+				{% if not lesson.isValidated %}
+					<form action="{{ path('lesson_validate', { id: lesson.id }) }}" method="POST">
+						<button class="btn btn-success">Valider la leçon</button>
+					</form>
+				{% else %}
+					<p class="text-success">Leçon validée !</p>
+				{% endif %}
 			</div>
 		</div>
 	</div>

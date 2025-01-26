@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Repository\PurchaseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -101,20 +102,20 @@ class UserController extends AbstractController
         $this->addFlash('success', 'Utilisateur supprimé avec succès.');
         return $this->redirectToRoute('admin_user_list');
     }
-
+    
     #[Route('/my-lessons', name: 'user_lessons')]
-    public function myLessons(): Response
+    public function myLessons(PurchaseRepository $purchaseRepository): Response
     {
         $user = $this->getUser();
+        $purchases = $purchaseRepository->findBy([
+            'user' => $user,
+            'status' => 'completed',
+        ]);
 
-        $lessons = array_map(function ($purchase) {
-            return $purchase->getLesson();
-        }, array_filter($user->getPurchases()->toArray(), function ($purchase) {
-            return $purchase->getItemType() === 'lesson';
-        }));
-
+        $certifications = $user->getCertifications();
         return $this->render('lesson/my_lessons.html.twig', [
-            'lessons' => $lessons,
+            'purchases' => $purchases,
+            'certifications'=> $certifications
         ]);
     }
     

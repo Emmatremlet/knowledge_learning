@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PurchaseRepository::class)]
-class Purchase
+class Purchase extends BaseEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -25,6 +25,9 @@ class Purchase
 
     #[ORM\Column]
     private ?\DateTimeImmutable $purchaseDate = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $status = 'pending';
 
     #[ORM\Column]
     private ?float $totalPrice = null;
@@ -88,6 +91,18 @@ class Purchase
     public function setTotalPrice(float $totalPrice): static
     {
         $this->totalPrice = $totalPrice;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

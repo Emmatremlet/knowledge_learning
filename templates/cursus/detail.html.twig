@@ -7,19 +7,7 @@
 {% block body %}
 	<div class="container my-5">
 		<h1 class="text-center primary mb-4">{{ cursus.name }}</h1>
-
-		<div class="card shadow-lg mb-4" style="background-color: #f1f8fc; color: #384050;">
-			<div class="card-body">
-				<h2 class="card-title primary mb-3">Description</h2>
-				<p class="card-text">{{ cursus.description }}</p>
-
-				<div class="text-center mt-4">
-					<a href="/cursus/add-to-cart/{{ cursus.id }}" class="btn button w-50">Ajouter le cursus au panier</a>
-				</div>
-			</div>
-		</div>
-
-		<h2 class="text-center primary mb-4">Leçons incluses dans ce cursus</h2>
+		<h2 class="text-center secondary mb-4">Leçons incluses dans ce cursus</h2>
 
 		<div class="row">
 			{% for lesson in cursus.lessons %}
@@ -27,7 +15,6 @@
 					<div class="card shadow" style="background-color: #f1f8fc; color: #384050;">
 						<div class="card-body">
 							<h5 class="card-title primary">{{ lesson.name }}</h5>
-							<p class="card-text secondary">{{ lesson.description }}</p>
 							<div class="text-center mt-4">
 								<a href="{{ path('lesson_detail', { id: lesson.id }) }}" class="btn btn-outline-primary w-100">Voir la leçon</a>
 							</div>

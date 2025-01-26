@@ -12,8 +12,7 @@
 				<tr>
 					<th>ID</th>
 					<th>Utilisateur</th>
-					<th>Type d'achat</th>
-					<th>ID de l'élément</th>
+					<th>Nom du cours ou lesson acheté</th>
 					<th>Date d'achat</th>
 					<th>Prix total</th>
 					<th>Actions</th>
@@ -24,8 +23,11 @@
 					<tr>
 						<td>{{ purchase.id }}</td>
 						<td>{{ purchase.user.name }}</td>
-						<td>{{ purchase.itemType|capitalize }}</td>
-						<td>{{ purchase.itemId }}</td>
+						{% if purchase.lesson|length>0 %}
+							<td>{{ purchase.lesson.name }}</td>
+						{% else %}
+							<td>{{ purchase.cursus.name }}</td>
+						{% endif %}
 						<td>{{ purchase.purchaseDate|date('d/m/Y H:i') }}</td>
 						<td>{{ purchase.totalPrice }}
 							€</td>
@@ -39,6 +41,6 @@
 					</tr>
 				{% endfor %}
 			</tbody>
-		</table>
-	</div>
-{% endblock %}
+		</tbody>
+	</table>
+</div>{% endblock %}

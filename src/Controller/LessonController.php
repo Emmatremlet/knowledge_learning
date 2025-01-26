@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Lesson;
+use App\Entity\Certification;
 use App\Form\LessonType;
 use App\Repository\LessonRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -82,11 +83,15 @@ class LessonController extends AbstractController
     {
         $user = $this->getUser();
 
-        $hasAccess = $user->getPurchases()->exists(function ($key, $purchase) use ($lesson) {
+        $hasAccessToLesson = $user->getPurchases()->exists(function ($key, $purchase) use ($lesson) {
             return $purchase->getLesson() === $lesson;
         });
 
-        if (!$hasAccess) {
+        $hasAccessToCursus = $user->getPurchases()->exists(function ($key, $purchase) use ($lesson) {
+            return $purchase->getCursus() && $purchase->getCursus()->getLessons()->contains($lesson);
+        });
+
+        if (!$hasAccessToLesson && !$hasAccessToCursus) {
             $this->addFlash('danger', 'Vous n\'avez pas accès à cette leçon.');
             return $this->redirectToRoute('cart_index');
         }
@@ -94,6 +99,40 @@ class LessonController extends AbstractController
         return $this->render('lesson/detail.html.twig', [
             'lesson' => $lesson,
         ]);
+    }
+
+    #[Route('/lesson/{id}/validate', name: 'lesson_validate', methods: ['POST'])]
+    public function validateLesson(Lesson $lesson, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+
+        $hasAccess = $user->getPurchases()->exists(function ($key, $purchase) use ($lesson) {
+            return $purchase->getLesson() === $lesson || 
+                ($purchase->getCursus() && $purchase->getCursus()->getLessons()->contains($lesson));
+        });
+
+        if (!$hasAccess) {
+            $this->addFlash('danger', 'Vous n\'avez pas accès à cette leçon.');
+            return $this->redirectToRoute('cart_index');
+        }
+
+        $lesson->setIsValidated(true);
+        $entityManager->flush();
+
+        $cursus = $lesson->getCursus();
+        if ($cursus && $cursus->getLessons()->forAll(fn($key, $lesson) => $lesson->isValidated())) {
+            $certification = new Certification();
+            $certification->setUser($user)
+                ->setCursus($cursus)
+                ->setIsValidated(true)
+                ->setValidatedAt(new \DateTimeImmutable());
+            $entityManager->persist($certification);
+        }
+
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Leçon validée avec succès !');
+        return $this->redirectToRoute('lesson_detail', ['id' => $lesson->getId()]);
     }
 }
 

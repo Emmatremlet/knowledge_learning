@@ -6,7 +6,7 @@ use App\Repository\LessonRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LessonRepository::class)]
-class Lesson
+class Lesson extends BaseEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,6 +27,20 @@ class Lesson
 
     #[ORM\ManyToOne(inversedBy: 'lessons')]
     private ?Cursus $cursus = null;
+
+    #[ORM\Column(options: ['default' => false])]
+    private bool $isValidated = false;
+
+    public function isValidated(): bool
+    {
+        return $this->isValidated;
+    }
+
+    public function setIsValidated(bool $isValidated): self
+    {
+        $this->isValidated = $isValidated;
+        return $this;
+    }
 
     public function getId(): ?int
     {

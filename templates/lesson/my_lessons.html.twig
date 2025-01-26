@@ -1,27 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mes Leçons
+{% block title %}Mes Leçons et Cursus
 {% endblock %}
 
 {% block body %}
 	<div class="container my-5">
-		<h1 class="text-center primary">Mes Leçons</h1>
+		<h1 class="text-center primary mb-4">Mes Leçons et Cursus</h1>
 
-		<div class="row">
-			{% if lessons|length > 0 %}
-				{% for lesson in lessons %}
-					<div class="col-md-4 mb-4">
-						<div class="card shadow" style="background-color: #f1f8fc; color: #384050;">
-							<div class="card-body">
-								<h5 class="card-title primary">{{ lesson.name }}</h5>
-								<p class="card-text secondary">{{ lesson.description }}</p>
-								<a href="{{ path('lesson_detail', { id: lesson.id }) }}" class="btn button">Voir la leçon</a>
+		<div class="row g-4">
+			{% if purchases|length > 0 %}
+				{% for purchase in purchases %}
+					{% if purchase.lesson %}
+						<div class="col-md-6 col-lg-4">
+							<div class="card shadow-sm h-100 border-0 rounded-lg" style="background-color: #f1f8fc;">
+								<div class="card-body d-flex flex-column">
+									<h5 class="card-title primary text-center">{{ purchase.lesson.name }}</h5>
+									<p class="card-text secondary text-center">{{ purchase.lesson.description }}</p>
+									<div class="mt-auto text-center">
+										<a href="{{ path('lesson_detail', { id: purchase.lesson.id }) }}" class="btn btn-outline-primary w-75">Voir la leçon</a>
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
+					{% elseif purchase.cursus %}
+						<div class="col-md-6 col-lg-4">
+							<div class="card shadow-sm h-100 border-0 rounded-lg" style="background-color: #f1f8fc; position: relative;">
+								<div class="card-body d-flex flex-column">
+									<h5 class="card-title primary text-center my-3">{{ purchase.cursus.name }}</h5>
+									{% if certifications|length > 0 %}
+										{% for certification in certifications %}
+											{% if certification.cursus == purchase.cursus %}
+												<span class="badge bg-success position-absolute top-0 end-0 m-2">Validé</span>
+											{% else %}
+												<span class="badge bg-danger position-absolute top-0 end-0 m-2">Non validé</span>
+											{% endif %}
+										{% endfor %}
+									{% else %}
+										<span class="badge bg-danger position-absolute top-0 end-0 m-2">Non validé</span>
+									{% endif %}
+
+									<div class="mt-auto text-center">
+										<a href="{{ path('cursus_detail', { id: purchase.cursus.id }) }}" class="btn btn-outline-primary w-75">Voir le cursus</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endif %}
 				{% endfor %}
 			{% else %}
-				<p class="text-center my-5 secondary">Vous n'avez pas encore de leçons.</p>
+				<div class="text-center my-5">
+					<p class="secondary">Vous n'avez pas encore de leçons ou de cursus.</p>
+					<a href="{{ path('themes') }}" class="btn btn-primary mt-3">Parcourir les cours</a>
+				</div>
 			{% endif %}
 		</div>
 	</div>
