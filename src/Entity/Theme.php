@@ -31,7 +31,6 @@ class Theme extends BaseEntity
     public function __construct()
     {
         $this->cursuses = new ArrayCollection();
-        $this->certifications = new ArrayCollection();
     }
 
     public function getId(): ?int
