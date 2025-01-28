@@ -7,37 +7,25 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Class CertificationRepository
+ *
+ * Ce repository gère les requêtes pour l'entité Certification.
+ * Il étend la classe ServiceEntityRepository fournie par Doctrine.
+ *
  * @extends ServiceEntityRepository<Certification>
+ * @package App\Repository
  */
 class CertificationRepository extends ServiceEntityRepository
 {
+    /**
+     * CertificationRepository constructor.
+     *
+     * Initialise le repository avec le gestionnaire de registre pour l'entité Certification.
+     *
+     * @param ManagerRegistry $registry Le gestionnaire de registre Doctrine.
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Certification::class);
     }
-
-//    /**
-//     * @return Certification[] Returns an array of Certification objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Certification
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

@@ -17,8 +17,20 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\EntityType;
 
+/**
+ * UserController
+ * Gère les opérations liées aux utilisateurs.
+ */
 class UserController extends AbstractController
 {
+    /**
+     * Liste tous les utilisateurs et permet d’ajouter un nouvel utilisateur.
+     *
+     * @Route("/dashboard/users", name="admin_user_list")
+     * @param UserRepository $userRepository
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/dashboard/users', name: 'admin_user_list')]
     public function list(UserRepository $userRepository,  Request $request): Response
     {
@@ -58,6 +70,15 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * Permet de modifier un utilisateur existant.
+     *
+     * @Route("/admin/user/{id}/edit", name="admin_user_edit")
+     * @param User $user
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/admin/user/{id}/edit', name: 'admin_user_edit')]
     public function edit(User $user, Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -93,6 +114,14 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * Supprime un utilisateur existant.
+     *
+     * @Route("/admin/user/{id}/delete", name="admin_user_delete", methods={"POST"})
+     * @param User $user
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/admin/user/{id}/delete', name: 'admin_user_delete', methods: ['POST'])]
     public function delete(User $user, EntityManagerInterface $entityManager): Response
     {
@@ -103,6 +132,13 @@ class UserController extends AbstractController
         return $this->redirectToRoute('admin_user_list');
     }
     
+    /**
+     * Affiche les leçons et certifications de l'utilisateur connecté.
+     *
+     * @Route("/my-lessons", name="user_lessons")
+     * @param PurchaseRepository $purchaseRepository
+     * @return Response
+     */
     #[Route('/my-lessons', name: 'user_lessons')]
     public function myLessons(PurchaseRepository $purchaseRepository): Response
     {

@@ -13,10 +13,21 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * LessonController
+ * Gère les fonctionnalités liées aux leçons.
+ */
 class LessonController extends AbstractController
 {
-
-    #[Route('/dashboard/lesson', name: 'admin_lesson')]
+    /**
+     * Affiche la liste des leçons et permet d'en ajouter une nouvelle.
+     *
+     * @Route("/dashboard/lesson", name="admin_lesson")
+     * @param LessonRepository $lessonRepository
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     public function new(LessonRepository $lessonRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $lessons = $lessonRepository->findAll();
@@ -25,11 +36,10 @@ class LessonController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $entityManager->persist($lesson);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Leçon ajouté avec succès !');
+            $this->addFlash('success', 'Leçon ajoutée avec succès !');
 
             return $this->redirectToRoute('admin_lesson');
         }
@@ -39,8 +49,16 @@ class LessonController extends AbstractController
             'lessons' => $lessons
         ]);
     }
-        
-    #[Route('/lesson/edit/{id}', name: 'lesson_edit')]
+
+    /**
+     * Permet de modifier une leçon existante.
+     *
+     * @Route("/lesson/edit/{id}", name="lesson_edit")
+     * @param Lesson $lesson
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     public function edit(Lesson $lesson, Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(LessonType::class, $lesson);
@@ -49,7 +67,7 @@ class LessonController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            $this->addFlash('success', 'Leçon modifié avec succès !');
+            $this->addFlash('success', 'Leçon modifiée avec succès !');
 
             return $this->redirectToRoute('admin_lesson');
         }
@@ -60,7 +78,14 @@ class LessonController extends AbstractController
         ]);
     }
 
-    #[Route('/lesson/delete/{id}', name: 'lesson_delete')]
+    /**
+     * Supprime une leçon.
+     *
+     * @Route("/lesson/delete/{id}", name="lesson_delete")
+     * @param Lesson $lesson
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse
+     */
     public function delete(Lesson $lesson, EntityManagerInterface $entityManager): RedirectResponse
     {
         $entityManager->remove($lesson);
@@ -74,11 +99,17 @@ class LessonController extends AbstractController
             throw $e;
         }
 
-        $this->addFlash('success', 'Lesson supprimé avec succès !');
+        $this->addFlash('success', 'Leçon supprimée avec succès !');
         return $this->redirectToRoute('admin_lesson');
     }
 
-    #[Route('/lesson/{id}', name: 'lesson_detail')]
+    /**
+     * Affiche les détails d'une leçon.
+     *
+     * @Route("/lesson/{id}", name="lesson_detail")
+     * @param Lesson $lesson
+     * @return Response
+     */
     public function lessonDetail(Lesson $lesson): Response
     {
         $user = $this->getUser();
@@ -101,7 +132,14 @@ class LessonController extends AbstractController
         ]);
     }
 
-    #[Route('/lesson/{id}/validate', name: 'lesson_validate', methods: ['POST'])]
+    /**
+     * Valide une leçon et attribue une certification si toutes les leçons d'un cursus sont validées.
+     *
+     * @Route("/lesson/{id}/validate", name="lesson_validate", methods={"POST"})
+     * @param Lesson $lesson
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     public function validateLesson(Lesson $lesson, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -135,5 +173,3 @@ class LessonController extends AbstractController
         return $this->redirectToRoute('lesson_detail', ['id' => $lesson->getId()]);
     }
 }
-
-?>

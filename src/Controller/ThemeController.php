@@ -12,10 +12,21 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * ThemeController
+ * Gère les thèmes dans l'application.
+ */
 class ThemeController extends AbstractController
 {
-
-    #[Route('/dashboard/theme', name: 'admin_theme')]
+    /**
+     * Affiche la liste des thèmes et permet d'en ajouter un nouveau.
+     *
+     * @Route("/dashboard/theme", name="admin_theme")
+     * @param ThemeRepository $themeRepository
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     public function new(ThemeRepository $themeRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $themes = $themeRepository->findAll();
@@ -39,7 +50,15 @@ class ThemeController extends AbstractController
         ]);
     }
         
-    #[Route('/theme/edit/{id}', name: 'theme_edit')]
+    /**
+     * Permet de modifier un thème existant.
+     *
+     * @Route("/theme/edit/{id}", name="theme_edit")
+     * @param Theme $theme
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     public function edit(Theme $theme, Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ThemeType::class, $theme);
@@ -59,7 +78,14 @@ class ThemeController extends AbstractController
         ]);
     }
 
-    #[Route('/theme/delete/{id}', name: 'theme_delete')]
+    /**
+     * Supprime un thème.
+     *
+     * @Route("/theme/delete/{id}", name="theme_delete")
+     * @param Theme $theme
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse
+     */
     public function delete(Theme $theme, EntityManagerInterface $entityManager): RedirectResponse
     {
         $entityManager->remove($theme);
@@ -77,10 +103,15 @@ class ThemeController extends AbstractController
         return $this->redirectToRoute('admin_theme');
     }
     
-    #[Route('/theme/{id}', name: 'theme')]
+    /**
+     * Affiche les détails d'un thème.
+     *
+     * @Route("/theme/{id}", name="theme")
+     * @param Theme $theme
+     * @return Response
+     */
     public function show(Theme $theme): Response
     {
-        // Récupérer tous les cursus et leurs leçons associés au thème
         $cursuses = $theme->getCursuses();
 
         return $this->render('theme/show.html.twig', [
@@ -89,7 +120,13 @@ class ThemeController extends AbstractController
         ]);
     }
 
-    #[Route('/theme', name: 'themes')]
+    /**
+     * Affiche la liste de tous les thèmes.
+     *
+     * @Route("/theme", name="themes")
+     * @param ThemeRepository $themeRepository
+     * @return Response
+     */
     public function list(ThemeRepository $themeRepository): Response
     {
         $themes = $themeRepository->getAll();

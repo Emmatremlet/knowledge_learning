@@ -7,17 +7,35 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Class ThemeRepository
+ *
+ * Ce repository gère les requêtes pour l'entité Theme.
+ * Il étend la classe ServiceEntityRepository fournie par Doctrine et inclut des méthodes personnalisées pour des recherches spécifiques.
+ *
  * @extends ServiceEntityRepository<Theme>
+ * @package App\Repository
  */
 class ThemeRepository extends ServiceEntityRepository
 {
+    /**
+     * ThemeRepository constructor.
+     *
+     * Initialise le repository avec le gestionnaire de registre pour l'entité Theme.
+     *
+     * @param ManagerRegistry $registry Le gestionnaire de registre Doctrine.
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Theme::class);
     }
 
     /**
-     * Retourne les deux thèmes avec le prix total des cursus le plus élevé
+     * Trouve les deux thèmes ayant le prix total des cursus le plus élevé.
+     *
+     * Cette méthode calcule la somme des prix des cursus associés à chaque thème,
+     * trie les résultats par ordre décroissant et retourne les deux thèmes en tête.
+     *
+     * @return array Retourne un tableau contenant les deux thèmes avec leur prix total de cursus.
      */
     public function findTopTwoThemesByTotalCursusPrice(): array
     {
@@ -31,39 +49,22 @@ class ThemeRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * Récupère tous les thèmes avec leurs cursus et leurs leçons.
+     *
+     * Cette méthode charge tous les thèmes, en incluant leurs cursus associés
+     * ainsi que les leçons liées à ces cursus via des jointures.
+     *
+     * @return array Retourne un tableau contenant tous les thèmes avec leurs relations.
+     */
     public function getAll(): array
     {
         return $this->createQueryBuilder('t')
-            ->leftJoin('t.cursuses', 'c')
-            ->addSelect('c')
-            ->leftJoin('c.lessons', 'l')
-            ->addSelect('l')
+            ->leftJoin('t.cursuses', 'c') 
+            ->addSelect('c') 
+            ->leftJoin('c.lessons', 'l') 
+            ->addSelect('l') 
             ->getQuery()
             ->getResult();
     }
-    
-//    /**
-//     * @return Theme[] Returns an array of Theme objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Theme
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

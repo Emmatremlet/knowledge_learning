@@ -21,9 +21,19 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
+/**
+ * PurchaseController
+ * Gère les achats des utilisateurs et leur panier.
+ */
 class PurchaseController extends AbstractController
 {
-    #[Route('/cart', name: 'cart_index')]
+    /**
+     * Affiche le panier de l'utilisateur connecté.
+     *
+     * @Route("/cart", name="cart_index")
+     * @param PurchaseRepository $purchaseRepository
+     * @return Response
+     */
     public function index(PurchaseRepository $purchaseRepository): Response
     {
         $user = $this->getUser();
@@ -39,7 +49,17 @@ class PurchaseController extends AbstractController
         ]);
     }
 
-    #[Route('/cart/add/{type}/{id}', name: 'cart_add')]
+    /**
+     * Ajoute une leçon ou un cursus au panier.
+     *
+     * @Route("/cart/add/{type}/{id}", name="cart_add")
+     * @param string $type
+     * @param int $id
+     * @param LessonRepository $lessonRepository
+     * @param CursusRepository $cursusRepository
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     public function add(
         string $type,
         int $id,
@@ -83,8 +103,16 @@ class PurchaseController extends AbstractController
 
         return $this->redirectToRoute('cart_index');
     }
-    
-    #[Route('/cart/remove/{id}', name: 'cart_remove')]
+
+    /**
+     * Supprime un élément du panier.
+     *
+     * @Route("/cart/remove/{id}", name="cart_remove")
+     * @param int $id
+     * @param PurchaseRepository $purchaseRepository
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     public function remove(int $id, PurchaseRepository $purchaseRepository, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -102,7 +130,14 @@ class PurchaseController extends AbstractController
         return $this->redirectToRoute('cart_index');
     }
 
-     #[Route('/dashboard/purchases', name: 'admin_purchase_list')]
+    /**
+     * Affiche la liste des achats terminés et permet d'ajouter un achat.
+     *
+     * @Route("/dashboard/purchases", name="admin_purchase_list")
+     * @param PurchaseRepository $purchaseRepository
+     * @param Request $request
+     * @return Response
+     */
     public function list(PurchaseRepository $purchaseRepository, Request $request): Response
     {
         $purchases = $purchaseRepository->findBy([
@@ -146,7 +181,15 @@ class PurchaseController extends AbstractController
         ]);
     }
 
-    #[Route('/dashboard/purchase/{id}/edit', name: 'admin_purchase_edit')]
+    /**
+     * Modifie un achat existant.
+     *
+     * @Route("/dashboard/purchase/{id}/edit", name="admin_purchase_edit")
+     * @param Purchase $purchase
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     public function edit(Purchase $purchase, Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createFormBuilder($purchase)
@@ -190,7 +233,14 @@ class PurchaseController extends AbstractController
         ]);
     }
 
-    #[Route('/dashboard/purchase/{id}/delete', name: 'admin_purchase_delete', methods: ['POST'])]
+    /**
+     * Supprime un achat existant.
+     *
+     * @Route("/dashboard/purchase/{id}/delete", name="admin_purchase_delete", methods={"POST"})
+     * @param Purchase $purchase
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     public function delete(Purchase $purchase, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($purchase);

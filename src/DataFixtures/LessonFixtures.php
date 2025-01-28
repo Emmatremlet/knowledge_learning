@@ -8,10 +8,25 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+/**
+ * Class LessonFixtures
+ *
+ * Cette classe permet de charger les données de fixtures pour l'entité Lesson.
+ * Elle crée plusieurs leçons en fonction des données définies dans la constante LESSON
+ * et les associe aux cursus correspondants via des références.
+ *
+ * @package App\DataFixtures
+ */
 class LessonFixtures extends Fixture implements DependentFixtureInterface
 {
-        public const LESSON = [
-        ['name' => 'Leçon n°1 : Découverte de l’instrument', 'price' => 26, 'cursus' => 0, ],
+    /**
+     * Liste des leçons à créer.
+     *
+     * Chaque leçon contient un nom, un prix, un index correspondant à un cursus (référence),
+     * une description par défaut et une URL de vidéo.
+     */
+    public const LESSON = [
+        ['name' => 'Leçon n°1 : Découverte de l’instrument', 'price' => 26, 'cursus' => 0],
         ['name' => 'Leçon n°2 : Les accords et les gammes', 'price' => 26, 'cursus' => 0],
         ['name' => 'Leçon n°1 : Découverte de l’instrument', 'price' => 26, 'cursus' => 1],
         ['name' => 'Leçon n°2 : Les accords et les gammes', 'price' => 26, 'cursus' => 1],
@@ -25,6 +40,16 @@ class LessonFixtures extends Fixture implements DependentFixtureInterface
         ['name' => 'Leçon n°2 : Harmoniser un repas à quatre plats', 'price' => 26, 'cursus' => 5],
     ];
 
+    /**
+     * Charge les données de fixtures pour l'entité Lesson.
+     *
+     * Cette méthode crée des objets Lesson à partir des données définies dans la constante LESSON.
+     * Chaque leçon est associée à un cursus correspondant via une référence.
+     * Une description par défaut et une URL de vidéo sont également ajoutées.
+     * Les leçons sont ensuite persistées dans la base de données.
+     *
+     * @param ObjectManager $manager Le gestionnaire d'entités de Doctrine.
+     */
     public function load(ObjectManager $manager): void
     {
         foreach (self::LESSON as $key => $data) {
@@ -38,9 +63,18 @@ class LessonFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($lesson);
             $this->addReference("lesson_$key", $lesson);
         }
+
         $manager->flush();
     }
 
+    /**
+     * Retourne les dépendances de cette fixture.
+     *
+     * Cette méthode permet d'indiquer que cette fixture dépend des données de la fixture CursusFixtures.
+     * Cela garantit que les données des cursus seront chargées avant celles des leçons.
+     *
+     * @return array La liste des classes des fixtures dont dépend cette fixture.
+     */
     public function getDependencies(): array
     {
         return [

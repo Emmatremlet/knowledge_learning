@@ -12,10 +12,21 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * CursusController
+ * Gère les fonctionnalités liées aux cursus.
+ */
 class CursusController extends AbstractController
 {
-
-    #[Route('/dashboard/cursus', name: 'admin_cursus')]
+    /**
+     * Affiche la liste des cursus et permet d'en ajouter un nouveau.
+     *
+     * @Route("/dashboard/cursus", name="admin_cursus")
+     * @param CursusRepository $cursusRepository
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     public function new(CursusRepository $cursusRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $cursuses = $cursusRepository->findAll();
@@ -24,7 +35,6 @@ class CursusController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $entityManager->persist($cursus);
             $entityManager->flush();
 
@@ -38,8 +48,16 @@ class CursusController extends AbstractController
             'cursuses' => $cursuses
         ]);
     }
-        
-    #[Route('/cursus/edit/{id}', name: 'cursus_edit')]
+
+    /**
+     * Permet de modifier un cursus existant.
+     *
+     * @Route("/cursus/edit/{id}", name="cursus_edit")
+     * @param Cursus $cursus
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     public function edit(Cursus $cursus, Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(CursusType::class, $cursus);
@@ -59,30 +77,34 @@ class CursusController extends AbstractController
         ]);
     }
 
-    #[Route('/cursus/delete/{id}', name: 'cursus_delete')]
+    /**
+     * Supprime un cursus.
+     *
+     * @Route("/cursus/delete/{id}", name="cursus_delete")
+     * @param Cursus $cursus
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse
+     */
     public function delete(Cursus $cursus, EntityManagerInterface $entityManager): RedirectResponse
     {
         $entityManager->remove($cursus);
-        try {
-            $entityManager->flush();
-        } catch (\Doctrine\ORM\ORMException $e) {
-            if (method_exists($e, 'getCycle')) {
-                $cycle = $e->getCycle();
-                dump($cycle);
-            }
-            throw $e;
-        }
+        $entityManager->flush();
 
-        $this->addFlash('success', 'Thème supprimé avec succès !');
+        $this->addFlash('success', 'Cursus supprimé avec succès !');
         return $this->redirectToRoute('admin_cursus');
     }
 
-    #[Route('/cursus/{id}', name: 'cursus_detail')]
+    /**
+     * Affiche les détails d'un cursus.
+     *
+     * @Route("/cursus/{id}", name="cursus_detail")
+     * @param Cursus $cursus
+     * @return Response
+     */
     public function cursusDetail(Cursus $cursus): Response
     {
         $user = $this->getUser();
 
-        // Vérifiez si l'utilisateur a acheté ce cursus
         $hasAccess = $user->getPurchases()->exists(function ($key, $purchase) use ($cursus) {
             return $purchase->getCursus() === $cursus;
         });
@@ -97,5 +119,3 @@ class CursusController extends AbstractController
         ]);
     }
 }
-
-?>

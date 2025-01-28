@@ -13,7 +13,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-
+/**
+ * StripeController
+ * Gère les paiements Stripe et les webhooks associés.
+ */
 class StripeController extends AbstractController
 {
     private LoggerInterface $logger;
@@ -23,7 +26,15 @@ class StripeController extends AbstractController
         $this->logger = $logger;
     }
     
-    #[Route('/checkout', name: 'stripe_checkout', methods: ['POST'])]
+    /**
+     * Crée une session de paiement Stripe pour les articles dans le panier de l'utilisateur.
+     *
+     * @Route("/checkout", name="stripe_checkout", methods={"POST"})
+     * @param Request $request
+     * @param StripeService $stripeService
+     * @param EntityManagerInterface $entityManager
+     * @return JsonResponse
+     */
     public function checkout(Request $request, StripeService $stripeService, EntityManagerInterface $entityManager): JsonResponse
     {
         $user = $this->getUser();
@@ -49,7 +60,6 @@ class StripeController extends AbstractController
                 $productName = $purchase->getCursus()->getName();
                 $price = $purchase->getCursus()->getPrice();
             }
-
 
             if (!$productName || $price <= 0) {
                 return new JsonResponse(['error' => 'Produit invalide détecté dans le panier.'], 400);
@@ -83,21 +93,38 @@ class StripeController extends AbstractController
         }
     }
 
-    #[Route('/checkout/success', name: 'stripe_success', methods: ['GET'])]
+    /**
+     * Affiche une page de succès après un paiement réussi.
+     *
+     * @Route("/checkout/success", name="stripe_success", methods={"GET"})
+     * @return RedirectResponse
+     */
     public function success(): RedirectResponse
     {
         $this->addFlash('success', 'Votre paiement a été effectué avec succès !');
         return $this->redirectToRoute('user_lessons');
     }
 
-    #[Route('/checkout/cancel', name: 'stripe_cancel', methods: ['GET'])]
+    /**
+     * Affiche une page d'annulation après un paiement annulé.
+     *
+     * @Route("/checkout/cancel", name="stripe_cancel", methods={"GET"})
+     * @return RedirectResponse
+     */
     public function cancel(): RedirectResponse
     {
         $this->addFlash('danger', 'Votre paiement a été annulé.');
         return $this->redirectToRoute('cart_index');
     }
 
-    #[Route('/webhook', name: 'stripe_webhook', methods: ['POST'])]
+    /**
+     * Gère les webhooks Stripe pour les événements liés aux paiements.
+     *
+     * @Route("/webhook", name="stripe_webhook", methods={"POST"})
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     public function handleWebhook(Request $request, EntityManagerInterface $entityManager): Response
     {
         $payload = $request->getContent();
@@ -112,17 +139,22 @@ class StripeController extends AbstractController
             return new Response('Invalid signature', 400);
         }
 
-        // Gérer les événements Stripe
         if ($event->type === 'checkout.session.completed') {
             $session = $event->data->object;
 
-            // Logique pour marquer les cours comme achetés
             $this->processPurchase($session, $entityManager);
         }
 
         return new Response('Webhook handled', 200);
     }
 
+    /**
+     * Marque les articles du panier comme achetés après un paiement réussi.
+     *
+     * @param object $session
+     * @param EntityManagerInterface $entityManager
+     * @return void
+     */
     private function processPurchase(object $session, EntityManagerInterface $entityManager): void
     {
         $userEmail = $session->customer_details.email;

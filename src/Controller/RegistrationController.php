@@ -20,6 +20,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
+/**
+ * RegistrationController
+ * Gère l'inscription et la vérification des utilisateurs.
+ */
 class RegistrationController extends AbstractController
 {
     public function __construct(private EmailVerifier $emailVerifier, UserRepository $userRepository)
@@ -27,7 +31,16 @@ class RegistrationController extends AbstractController
         $this->userRepository = $userRepository; 
     }
 
-    #[Route('/register', name: 'app_register')]
+    /**
+     * Permet à un utilisateur de s'inscrire.
+     *
+     * @Route("/register", name="app_register")
+     * @param Request $request
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -38,13 +51,11 @@ class RegistrationController extends AbstractController
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
 
-            // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
                     ->from('emmatremlet20@gmail.com')
@@ -55,8 +66,6 @@ class RegistrationController extends AbstractController
             
             $this->addFlash('success', 'Un e-mail de confirmation a été envoyé. Veuillez vérifier votre boîte de réception.');
 
-            // do anything else you need here, like send an email
-
             return $this->redirectToRoute('app_login');
         }
 
@@ -65,12 +74,18 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/verify/email', name: 'app_verify_email')]
+    /**
+     * Vérifie l'adresse e-mail de l'utilisateur après inscription.
+     *
+     * @Route("/verify/email", name="app_verify_email")
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return Response
+     */
     public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        // validate email confirmation link, sets User::isVerified=true and persists
         try {
             /** @var User $user */
             $user = $this->getUser();
@@ -80,14 +95,20 @@ class RegistrationController extends AbstractController
 
             return $this->redirectToRoute('app_register');
         }
-        
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+
+        $this->addFlash('success', 'Votre adresse e-mail a été vérifiée.');
 
         return $this->redirectToRoute('home');
     }
 
-    public function setAdminRole(EntityManagerInterface $entityManager): Response
+    /**
+     * Définit le rôle d'administrateur pour un utilisateur.
+     *
+     * @Route("/set-admin-role", name="set_admin_role")
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function setAdminRoles(EntityManagerInterface $entityManager): Response
     {
         $user = $this->userRepository->findOneByEmail('admin@example.com');
         
@@ -109,11 +130,5 @@ class RegistrationController extends AbstractController
         }
 
         return $this->redirectToRoute('home');
-    }
-    
-    #[Route('/set-admin-role', name: 'set_admin_role')]
-    public function setAdminRoles(EntityManagerInterface $entityManager): Response
-    {
-        return $this->setAdminRole($entityManager);
     }
 }
