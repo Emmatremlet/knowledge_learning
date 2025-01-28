@@ -21,12 +21,10 @@ security:
                 login_path: app_login
                 check_path: app_login
                 default_target_path: /home
-            
             logout:
                 path: app_logout
                 # where to redirect after logout
                 # target: app_any_route
-
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800

@@ -1,43 +1,53 @@
 <?php
 
-namespace App\Tests\Service;
+namespace App\Tests\Security;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use App\Entity\User;
-use Symfony\Component\HttpFoundation\Request;
 use App\Security\EmailVerifier;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
-
-class UserValidationTest extends KernelTestCase
+class EmailVerificationTest extends KernelTestCase
 {
     private EmailVerifier $emailVerifier;
+    private EntityManagerInterface $entityManager;
     private VerifyEmailHelperInterface $verifyEmailHelper;
-
 
     protected function setUp(): void
     {
         self::bootKernel();
-        $this->emailVerifier = static::getContainer()->get(EmailVerifier::class);
-        $this->verifyEmailHelper = self::getContainer()->get('verify_email_helper');
+
+        $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
+        $this->verifyEmailHelper = self::getContainer()->get(VerifyEmailHelperInterface::class);
+
+        $this->emailVerifier = new EmailVerifier(
+            $this->verifyEmailHelper,
+            self::getContainer()->get('mailer.mailer'),
+            $this->entityManager
+        );
     }
 
-    public function testUserEmailValidation(): void
+    public function testHandleEmailConfirmation(): void
     {
         $user = new User();
-        $user->setEmail('testuser@example.com');
+        $user->setName('Test User');
+        $user->setEmail('test@example.com');
+        $user->setPassword('password123');
         $user->setIsVerified(false);
 
-        $signatureComponents = $this->verifyEmailHelper->generateSignature(
-            'verify_email_route',
-            (string) $user->getId(),
-            (string) $user->getEmail()
-        );
+        // Simulate a signed URL in the request
+        $signedUrl = $this->verifyEmailHelper->generateSignature(
+            'app_verify_email', 
+            (string)$user->getId(),
+            $user->getEmail()
+        )->getSignedUrl();
 
-        $request = new Request([], [], [], [], [], ['QUERY_STRING' => parse_url($signatureComponents->getSignedUrl(), PHP_URL_QUERY)]);
+        $request = Request::create($signedUrl);
 
-        $this->userService->handleEmailConfirmation($request, $user);
+        $this->emailVerifier->handleEmailConfirmation($request, $user);
 
-        $this->assertTrue($user->getIsVerified(), 'User should be verified after validation.');
+        $this->assertTrue($user->getIsVerified());
     }
 }

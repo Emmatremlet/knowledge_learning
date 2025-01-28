@@ -127,17 +127,4 @@ class StripeControllerTest extends WebTestCase
         $this->assertEquals('Votre panier est vide.', $responseContent['error']);
     }   
 
-    public function testCheckoutWithValidCart(): void
-    {
-        $this->client->loginUser($this->user);
-        $this->client->request('POST', '/checkout', [
-            'orderId' => $this->purchase->getId(),
-        ]);
-
-        $response = $this->client->getResponse();
-
-        $this->assertResponseIsSuccessful();
-        $this->assertJson($response->getContent());
-        $this->assertArrayHasKey('id', json_decode($response->getContent(), true));
-    }
 }

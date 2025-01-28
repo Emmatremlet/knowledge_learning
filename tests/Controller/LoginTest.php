@@ -1,29 +1,69 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\Security;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Doctrine\ORM\EntityManagerInterface;
+
 
 class LoginTest extends WebTestCase
 {
-    public function testLogin(): void
+    private $client;
+    protected function setUp(): void
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        parent::setUp();
+
+        $this->client = static::createClient();
+        $entityManager =  $this->client->getContainer()->get(EntityManagerInterface::class);
+        $user = $entityManager->getRepository(User::class)->findOneBy(['email' => 'user@example.com']);
+
+        if (!$user) {
+            $user = new User();
+            $user->setName('Test User');
+            $user->setEmail('user@example.com');
+            $user->setPassword(password_hash('password123', PASSWORD_BCRYPT)); // Ensure password matches
+            $entityManager->persist($user);
+            $entityManager->flush();
+        }
+    }
+
+    public function testLoginPageIsSuccessful(): void
+    {
+        $crawler = $this->client->request('GET', '/login');
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Veuillez vous connecter');
+    }
 
-        $form = $crawler->selectButton('Se connecter')->form([
-            'email' => 'testuser@example.com',
-            'password' => 'password123',
-        ]);
+    public function testLoginWithValidCredentials(): void
+    {
 
-        $client->submit($form);
+        $crawler = $this->client->request('GET', '/login');
 
-        $this->assertResponseRedirects('/home');
+        $form = $crawler->selectButton('Se connecter')->form();
+        $form['email'] = 'user@example.com';
+        $form['password'] = 'password123';
 
-        $client->followRedirect();
-        $this->assertSelectorExists('h1', 'Bienvenue sur la page d\'accueil');
+        $this->client->submit($form);
+
+        $this->assertResponseRedirects('/');
+        $this->client->followRedirect();
+        $this->assertSelectorTextContains('h2', 'Nos cours phares');
+    }
+
+    public function testLoginWithInvalidCredentials(): void
+    {
+        $crawler = $this->client->request('GET', '/login');
+
+        $form = $crawler->selectButton('Se connecter')->form();
+        $form['email'] = 'invalid@example.com';
+        $form['password'] = 'wrongpassword';
+
+        $this->client->submit($form);
+        $response = $this->client->getResponse();
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertResponseRedirects('/login');
+        $this->client->followRedirect();
     }
 }
