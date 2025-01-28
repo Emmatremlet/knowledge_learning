@@ -27,6 +27,7 @@ class ThemeController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
+    #[Route("/dashboard/theme", name:"admin_theme")]
     public function new(ThemeRepository $themeRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $themes = $themeRepository->findAll();
@@ -59,6 +60,7 @@ class ThemeController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
+    #[Route("/theme/edit/{id}", name:"theme_edit")]
     public function edit(Theme $theme, Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ThemeType::class, $theme);
@@ -86,6 +88,7 @@ class ThemeController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return RedirectResponse
      */
+    #[Route("/theme/delete/{id}", name:"theme_delete")]
     public function delete(Theme $theme, EntityManagerInterface $entityManager): RedirectResponse
     {
         $entityManager->remove($theme);
@@ -110,6 +113,7 @@ class ThemeController extends AbstractController
      * @param Theme $theme
      * @return Response
      */
+    #[Route("/theme/{id}", name:"theme")]
     public function show(Theme $theme): Response
     {
         $cursuses = $theme->getCursuses();
@@ -127,6 +131,7 @@ class ThemeController extends AbstractController
      * @param ThemeRepository $themeRepository
      * @return Response
      */
+    #[Route("/theme", name:"themes")]
     public function list(ThemeRepository $themeRepository): Response
     {
         $themes = $themeRepository->getAll();

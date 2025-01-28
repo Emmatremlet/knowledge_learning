@@ -41,6 +41,7 @@ class RegistrationController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
+    #[Route("/register", name:"app_register")]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -82,6 +83,7 @@ class RegistrationController extends AbstractController
      * @param TranslatorInterface $translator
      * @return Response
      */
+    #[Route("/verify/email", name:"app_verify_email")]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -108,6 +110,7 @@ class RegistrationController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
+    #[Route("/set-admin-role", name:"set_admin_role")]
     public function setAdminRoles(EntityManagerInterface $entityManager): Response
     {
         $user = $this->userRepository->findOneByEmail('admin@example.com');

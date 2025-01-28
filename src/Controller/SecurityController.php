@@ -21,6 +21,7 @@ class SecurityController extends AbstractController
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
+    #[Route("/login", name:"app_login")]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
@@ -38,6 +39,7 @@ class SecurityController extends AbstractController
      *
      * @Route(path: "/logout", name: "app_logout", methods={"GET"})
      */
+    #[Route("/logout", name:"app_logout", methods:"GET")]
     public function logout(): never
     {
     }

@@ -18,6 +18,7 @@ class CertificationController extends AbstractController
      * @Route("/certifications", name="user_certifications")
      * @return Response
      */
+    #[Route("/certifications", name:"user_certifications")]
     public function list(): Response
     {
         $user = $this->getUser();

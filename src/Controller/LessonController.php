@@ -28,6 +28,7 @@ class LessonController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
+    #[Route("/dashboard/lesson", name:"admin_lesson")]
     public function new(LessonRepository $lessonRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $lessons = $lessonRepository->findAll();
@@ -59,6 +60,7 @@ class LessonController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
+    #[Route("/lesson/edit/{id}", name:"lesson_edit")]
     public function edit(Lesson $lesson, Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(LessonType::class, $lesson);
@@ -86,6 +88,7 @@ class LessonController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return RedirectResponse
      */
+    #[Route("/lesson/delete/{id}", name:"lesson_delete")]
     public function delete(Lesson $lesson, EntityManagerInterface $entityManager): RedirectResponse
     {
         $entityManager->remove($lesson);
@@ -110,6 +113,7 @@ class LessonController extends AbstractController
      * @param Lesson $lesson
      * @return Response
      */
+    #[Route("/lesson/{id}", name:"lesson_detail")]
     public function lessonDetail(Lesson $lesson): Response
     {
         $user = $this->getUser();
@@ -140,6 +144,7 @@ class LessonController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
+    #[Route("/lesson/{id}/validate", name:"lesson_validate", methods:"POST")]
     public function validateLesson(Lesson $lesson, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();

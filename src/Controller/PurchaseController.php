@@ -34,6 +34,7 @@ class PurchaseController extends AbstractController
      * @param PurchaseRepository $purchaseRepository
      * @return Response
      */
+    #[Route("/cart", name:"cart_index")]
     public function index(PurchaseRepository $purchaseRepository): Response
     {
         $user = $this->getUser();
@@ -60,6 +61,7 @@ class PurchaseController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
+    #[Route("/cart/add/{type}/{id}", name:"cart_add")]
     public function add(
         string $type,
         int $id,
@@ -113,6 +115,7 @@ class PurchaseController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
+    #[Route("/cart/remove/{id}", name:"cart_remove")]
     public function remove(int $id, PurchaseRepository $purchaseRepository, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -138,6 +141,7 @@ class PurchaseController extends AbstractController
      * @param Request $request
      * @return Response
      */
+    #[Route("/dashboard/purchases", name:"admin_purchase_list")]
     public function list(PurchaseRepository $purchaseRepository, Request $request): Response
     {
         $purchases = $purchaseRepository->findBy([
@@ -190,6 +194,7 @@ class PurchaseController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
+    #[Route("/dashboard/purchase/{id}/edit", name:"admin_purchase_edit")]
     public function edit(Purchase $purchase, Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createFormBuilder($purchase)
@@ -241,6 +246,7 @@ class PurchaseController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
+    #[Route("/dashboard/purchase/{id}/delete", name:"admin_purchase_delete", methods:"POST")]
     public function delete(Purchase $purchase, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($purchase);

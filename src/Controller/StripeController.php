@@ -35,6 +35,7 @@ class StripeController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return JsonResponse
      */
+    #[Route("/checkout", name:"stripe_checkout", methods:"POST")]
     public function checkout(Request $request, StripeService $stripeService, EntityManagerInterface $entityManager): JsonResponse
     {
         $user = $this->getUser();
@@ -99,6 +100,7 @@ class StripeController extends AbstractController
      * @Route("/checkout/success", name="stripe_success", methods={"GET"})
      * @return RedirectResponse
      */
+    #[Route("/checkout/success", name:"stripe_success", methods:"GET")]
     public function success(): RedirectResponse
     {
         $this->addFlash('success', 'Votre paiement a été effectué avec succès !');
@@ -111,6 +113,7 @@ class StripeController extends AbstractController
      * @Route("/checkout/cancel", name="stripe_cancel", methods={"GET"})
      * @return RedirectResponse
      */
+    #[Route("/checkout/cancel", name:"stripe_cancel", methods:"GET")]
     public function cancel(): RedirectResponse
     {
         $this->addFlash('danger', 'Votre paiement a été annulé.');
@@ -125,6 +128,7 @@ class StripeController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
+    #[Route("/webhook", name:"stripe_webhook", methods:"POST")]
     public function handleWebhook(Request $request, EntityManagerInterface $entityManager): Response
     {
         $payload = $request->getContent();

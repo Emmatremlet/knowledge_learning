@@ -20,6 +20,7 @@ class HomeController extends AbstractController
      * @param ThemeRepository $themeRepository
      * @return Response
      */
+    #[Route("/", name:"home")]
     public function index(ThemeRepository $themeRepository): Response
     {
         $themes = $themeRepository->findTopTwoThemesByTotalCursusPrice();

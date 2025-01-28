@@ -22,7 +22,7 @@ Knowledge Learning est une application web permettant aux utilisateurs d'acheter
 
 ## Prérequis
 
-- **PHP** ≥ 8.1
+- **PHP** >= 8.1
 - **Composer**
 - **Symfony CLI**
 - **MySQL** ou un autre SGBD compatible avec Doctrine
@@ -50,6 +50,10 @@ Knowledge Learning est une application web permettant aux utilisateurs d'acheter
 
 4. Configurez le fichier `.env` :
    - Modifiez les paramètres de connexion à la base de données.
+     ```env
+    DATABASE_URL="mysql://db_user:db_password@127.0.0.1:8000knowledge_learning"
+    MAILER_DSN="smtp://localhost"
+     ```
    - Ajoutez vos clés Stripe :
      ```env
      STRIPE_SECRET_KEY=sk_test_votrecle
@@ -63,12 +67,17 @@ Knowledge Learning est une application web permettant aux utilisateurs d'acheter
    php bin/console doctrine:migrations:migrate
    ```
 
-6. Lancez le serveur Symfony :
+6. Load fixtures:
+   ```bash
+   php bin/console doctrine:fixtures:load
+   ```
+
+7. Lancez le serveur Symfony :
    ```bash
    symfony server:start
    ```
 
-7. Lancez Stripe CLI pour les webhooks :
+8. Lancez Stripe CLI pour les webhooks :
    ```bash
    stripe listen --forward-to http://127.0.0.1:8000/webhook
    ```
@@ -91,11 +100,9 @@ Knowledge Learning est une application web permettant aux utilisateurs d'acheter
   php bin/console debug:router
   ```
 
-## Améliorations futures
+## Annexes
 
-- Ajout de tests de bout en bout.
-- Ajout de fonctionnalités de recherche et de filtrage dans les thèmes.
-- Amélioration de l'interface utilisateur pour une meilleure ergonomie.
+- Diagramme UML des entités disponible dans le dossier : `diagramme_UML/knowledge-learning_UML.png`.
 
 ## Auteur
 

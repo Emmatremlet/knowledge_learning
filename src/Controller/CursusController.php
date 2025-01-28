@@ -27,6 +27,7 @@ class CursusController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
+    #[Route("/dashboard/cursus", name:"admin_cursus")]
     public function new(CursusRepository $cursusRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $cursuses = $cursusRepository->findAll();
@@ -58,6 +59,7 @@ class CursusController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
+    #[Route("/cursus/edit/{id}", name:"cursus_edit")]
     public function edit(Cursus $cursus, Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(CursusType::class, $cursus);
@@ -85,6 +87,7 @@ class CursusController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return RedirectResponse
      */
+    #[Route("/cursus/delete/{id}", name:"cursus_delete")]
     public function delete(Cursus $cursus, EntityManagerInterface $entityManager): RedirectResponse
     {
         $entityManager->remove($cursus);
@@ -101,6 +104,7 @@ class CursusController extends AbstractController
      * @param Cursus $cursus
      * @return Response
      */
+    #[Route("/cursus/{id}", name:"cursus_detail")]
     public function cursusDetail(Cursus $cursus): Response
     {
         $user = $this->getUser();
