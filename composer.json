@@ -1,4 +1,6 @@
 {
+    "name": "emmatremlet/knowledge-learning",
+    "description": "A Symfony application for managing courses and certifications.",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
