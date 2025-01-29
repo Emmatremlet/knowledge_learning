@@ -88,6 +88,7 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "importmap:install": "symfony-cmd"
         },
+        
         "post-update-cmd": [
             "@auto-scripts"
         ],
