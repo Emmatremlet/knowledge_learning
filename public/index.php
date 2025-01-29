@@ -3,7 +3,6 @@
 use App\Kernel;
 
 use Symfony\Component\Dotenv\Dotenv;
-require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
 if (!isset($_SERVER['APP_ENV']) && file_exists(dirname(__DIR__).'/.env')) {
     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
