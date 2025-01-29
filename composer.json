@@ -87,9 +87,6 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "importmap:install": "symfony-cmd"
         },
-        "post-install-cmd": [
-            "if [ \"$APP_ENV\" != \"dev\" ]; then php bin/console cache:clear; fi"
-        ],
         "post-update-cmd": [
             "@auto-scripts"
         ]
