@@ -6,6 +6,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
+        "ext-pdo_mysql": "*",
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-curl": "*",
