@@ -53,8 +53,6 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
     {
         $email = $request->getPayload()->getString('email');
         $csrfToken = $request->request->get('_csrf_token');
-        dump(csrfToken);
-        die();
 
         $this->logger->info('CSRF Token at the start of authentication: ' . $csrfToken);
 
