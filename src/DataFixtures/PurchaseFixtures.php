@@ -23,7 +23,7 @@ class PurchaseFixtures extends Fixture implements DependentFixtureInterface
      * Charge les données de fixtures pour l'entité Purchase.
      *
      * Cette méthode génère des achats en boucle, associant chaque utilisateur à plusieurs cursus.
-     * Chaque achat comprend une date d'achat actuelle et un prix total généré aléatoirement.
+     * Chaque achat comprend une date d'achat actuelle et un prix total et un status généré aléatoirement.
      *
      * @param ObjectManager $manager Le gestionnaire d'entités de Doctrine.
      */
@@ -35,8 +35,9 @@ class PurchaseFixtures extends Fixture implements DependentFixtureInterface
                 $purchase->setUser($this->getReference("user_$userIndex", User::class))
                          ->setCursus($this->getReference("cursus_$cursusIndex", Cursus::class))
                          ->setPurchaseDate(new \DateTimeImmutable())
-                         ->setTotalPrice(mt_rand(50, 150));
-
+                         ->setTotalPrice(mt_rand(50, 150))
+                         ->setStatus(mt_rand(0, 1) ? 'completed' : 'pending');
+                         
                 $manager->persist($purchase);
             }
         }
