@@ -1,19 +1,26 @@
 <?php
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class DebugController extends AbstractController
 {
-    #[Route('/test-session', name: 'test_session')]
-    public function testSession(): Response
-    {
-        $session = $this->container->get('session');
-        $session->set('test', 'value');
-        $value = $session->get('test', 'default');
+    private SessionInterface $session;
 
-        return new Response("Session test: " . $value);
+    public function __construct(SessionInterface $session)
+    {
+        $this->session = $session;
+    }
+
+    public function testSession(Request $request): Response
+    {
+        $this->session->set('test', 'value');
+        $testValue = $this->session->get('test', 'default');
+
+        return new Response('Session value: ' . $testValue);
     }
 }
