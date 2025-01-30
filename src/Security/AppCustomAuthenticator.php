@@ -29,11 +29,16 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
      */
     public const LOGIN_ROUTE = 'app_login';
 
+    private LoggerInterface $logger;
+
     /**
      * @param UrlGeneratorInterface $urlGenerator Générateur d'URL pour les redirections.
      */
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator,
+        LoggerInterface $logger
+    ) {
+        $this->logger = $logger;
     }
 
     /**
@@ -45,17 +50,24 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
     public function authenticate(Request $request): Passport
     {
         $email = $request->getPayload()->getString('email');
+        $csrfToken = $request->request->get('_csrf_token');
+
+        $this->logger->info('CSRF Token at the start of authentication: ' . $csrfToken);
 
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
-        return new Passport(
+        $passport = new Passport(
             new UserBadge($email),
             new PasswordCredentials($request->request->get('password')),
             [
-                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
+                new CsrfTokenBadge('authenticate', $csrfToken),
                 new RememberMeBadge(),
             ]
         );
+
+        $this->logger->info('CSRF Token at the end of authentication: ' . $csrfToken);
+
+        return $passport;
     }
 
     /**
