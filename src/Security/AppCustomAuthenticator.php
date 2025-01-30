@@ -67,7 +67,7 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
             ]
         );
 
-        $this->logger->info('CSRF Token at the end of authentication: ' . $csrfToken);
+        $this->logger->error('CSRF Token at the end of authentication: ' . $csrfToken);
 
         return $passport;
     }
