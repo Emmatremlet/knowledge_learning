@@ -5,8 +5,10 @@ controllers:
     type: attribute
 
 documentation:
-    path: /documentation
+    path: /documentation/{file}
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
     defaults:
-        path: /docs/site/index.html
         permanent: true
+        path: /docs/site/{file}
+    requirements:
+        file: .*
