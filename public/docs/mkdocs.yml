@@ -1,0 +1,21 @@
+site_name: Documentation du site KNOWLEDGE LEARNING
+theme:
+  name: material
+  palette:
+    primary: blue
+    accent: cyan
+  custom:
+    primary: "#0074c7" 
+    accent: "#f1f8fc"
+  logo: assets/images/logo.jpeg
+  favicon: assets/images/favicon.png
+extra_css:
+  - assets/stylesheets/custom.css
+nav:
+  - Accueil: index.md
+  - Installation: installation.md
+  - Utilisation: utilisation.md
+  - API: api.md
+  - Architecture: architecture.md
+  - Sécurité: securite.md
+  - Déploiement: deploiement.md

@@ -1,8 +1,0 @@
-site_name: Documentation Symfony
-theme:
-  name: material
-nav:
-  - Accueil: index.md
-  - Installation: installation.md
-  - API: api.md
-  - Utilisation: utilisation.md

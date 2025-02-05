@@ -41,14 +41,8 @@ Knowledge Learning est une application web permettant aux utilisateurs d'acheter
    ```bash
    composer install
    ```
-
-3. Installez les dépendances frontend :
-   ```bash
-   npm install
-   npm run dev
-   ```
-
-4. Configurez le fichier `.env` :
+  
+3. Configurez le fichier `.env` :
    - Modifiez les paramètres de connexion à la base de données.
      ```env
     DATABASE_URL="mysql://db_user:db_password@127.0.0.1:8000knowledge_learning"
@@ -61,23 +55,23 @@ Knowledge Learning est une application web permettant aux utilisateurs d'acheter
      STRIPE_WEBHOOK_SECRET=whsec_votrecle
      ```
 
-5. Créez la base de données et appliquez les migrations :
+4. Créez la base de données et appliquez les migrations :
    ```bash
    php bin/console doctrine:database:create
    php bin/console doctrine:migrations:migrate
    ```
 
-6. Load fixtures:
+5. Load fixtures:
    ```bash
    php bin/console doctrine:fixtures:load
    ```
 
-7. Lancez le serveur Symfony :
+6. Lancez le serveur Symfony :
    ```bash
    symfony server:start
    ```
 
-8. Lancez Stripe CLI pour les webhooks :
+7. Lancez Stripe CLI pour les webhooks :
    ```bash
    stripe listen --forward-to http://127.0.0.1:8000/webhook
    ```
