@@ -6,6 +6,7 @@
 parameters:
     mailer_dsn: '%env(MAILER_DSN)%'
     stripe_public_key: '%env(STRIPE_PUBLIC_KEY)%'
+    env(APP_SECRET): '%env(APP_SECRET)%'
 
 
 services:
