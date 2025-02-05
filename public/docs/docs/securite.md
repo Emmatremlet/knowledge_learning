@@ -42,11 +42,3 @@ Toutes les actions sensibles (ajout, modification, suppression) sont protégées
 ### 🔹 Vérification des Rôles
 - **`ROLE_USER`** : Accès de base pour les utilisateurs authentifiés.
 - **`ROLE_ADMIN`** : Accès aux fonctionnalités administratives.
-
----
-
-## 🔹 Bonnes Pratiques
-
-1. Activer un pare-feu pour protéger les routes sensibles.
-2. Utiliser HTTPS en production pour sécuriser les échanges.
-3. Ne jamais exposer les variables sensibles (`.env`) publiquement.
