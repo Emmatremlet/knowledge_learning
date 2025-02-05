@@ -4,11 +4,45 @@ controllers:
         namespace: App\Controller
     type: attribute
 
-documentation:
-    path: /documentation/{file}
+documentation-accueil:
+    path: /documentation
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
     defaults:
+        path: /docs/site/index.html
         permanent: true
-        path: /docs/site/{file}
-    requirements:
-        file: .*
+documentation-api:
+    path: /documentation/api
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /docs/site/api/index.html
+        permanent: true
+documentation-architecture:
+    path: /documentation/architecture
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /docs/site/architecture/index.html
+        permanent: true
+documentation-deploiement:
+    path: /documentation/deploiement
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /docs/site/deploiement/index.html
+        permanent: true
+documentation-installation:
+    path: /documentation/installation
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /docs/site/installation/index.html
+        permanent: true
+documentation-securite:
+    path: /documentation/securite
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /docs/site/securite/index.html
+        permanent: true
+documentation-utilisation:
+    path: /documentation/utilisation
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /docs/site/utilisation/index.html
+        permanent: true
