@@ -11,8 +11,11 @@
     <php>
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
-        <server name="APP_ENV" value="test" force="true" />
+        <server name="APP_ENV" value="test"/>        
         <server name="SHELL_VERBOSITY" value="-1" />
+        <server name="APP_SECRET" value="eee6b9159541aac7ade7395ba383401351a2a00f8e997891a58f27829f0c564e"/>
+        <server name="DATABASE_URL" value="mysql://root:your_password@127.0.0.1:8889/knowledge_learning/test"/>
+        <server name="KERNEL_CLASS" value="App\Kernel"/>        
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
     </php>
