@@ -74,9 +74,9 @@ uml_full.node("Certification", '''Certification
 uml_full.edge("User", "Purchase", "OneToMany")
 uml_full.edge("User", "Certification", "OneToMany")
 uml_full.edge("Purchase", "Lesson", "ManyToOne")
-uml_full.edge("Lesson", "Theme", "ManyToOne")
-uml_full.edge("Theme", "Cursus", "ManyToOne")
-uml_full.edge("Cursus", "Theme", "OneToMany")
+uml_full.edge("Purchase", "Cursus", "ManyToOne")
+uml_full.edge("Theme", "Cursus", "OneToMany")
+uml_full.edge("Cursus", "Lesson", "OneToMany")
 
 # Render the updated UML diagram
 uml_full_filepath = "/Users/emma1/Desktop/CEF/PLATEFORME E-LEARNING « KNOWLEDGE LEARNING »/knowledge-learning/diagramme_UML/knowledge-learning_UML"
