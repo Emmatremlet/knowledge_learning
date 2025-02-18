@@ -9,8 +9,8 @@
 
 		{% if purchases|length > 0 %}
 			<table class="table table-striped">
-				<thead >
-					<tr >
+				<thead>
+					<tr>
 						<th class="secondary">Type</th>
 						<th class="secondary">Nom</th>
 						<th class="secondary">Prix</th>
@@ -20,20 +20,23 @@
 				</thead>
 				<tbody>
 					{% for purchase in purchases %}
-						<tr> 
+						<tr>
 							{% if purchase.lesson %}
 								<td class="secondary">Leçon</td>
 								<td class="secondary">
 									{{ purchase.lesson.name }}
 								</td>
+								<td class="secondary">{{ purchase.lesson.price }}
+									€</td>
 							{% elseif purchase.cursus %}
 								<td class="secondary">Cursus</td>
 								<td class="secondary">
 									{{ purchase.cursus.name }}
 								</td>
+								<td class="secondary">{{ purchase.cursus.price }}
+									€</td>
+
 							{% endif %}
-							<td class="secondary">{{ purchase.totalPrice }}
-								€</td>
 							<td class="secondary">{{ purchase.purchaseDate|date('d/m/Y H:i') }}</td>
 							<td class="secondary">
 								<a href="{{ path('cart_remove', { id: purchase.id }) }}" class="btn accent-red-button btn-danger btn-sm">Retirer</a>
@@ -59,27 +62,24 @@
 	<script>
 
 		const stripe = Stripe('{{ stripe_public_key }}');
-	
-		document.getElementById('checkout-button').addEventListener('click', () => {
-			fetch('{{ path('stripe_checkout') }}', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			.then(response => response.json())
-			.then(data => {
-				if (data.id) {
-					stripe.redirectToCheckout({sessionId: data.id});
-				} else {
-					alert(data.error || 'Une erreur est survenue lors de la création de la session de paiement.');
-				}
-			}).catch(error => {
-				console.error('Erreur lors de la redirection :', error);
-				alert('Une erreur technique est survenue. Veuillez réessayer.');
-			});
-		});
 
+document.getElementById('checkout-button').addEventListener('click', () => {
+fetch('{{ path('stripe_checkout') }}', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json'
+}
+}).then(response => response.json()).then(data => {
+if (data.id) {
+stripe.redirectToCheckout({sessionId: data.id});
+} else {
+alert(data.error || 'Une erreur est survenue lors de la création de la session de paiement.');
+}
+}).catch(error => {
+console.error('Erreur lors de la redirection :', error);
+alert('Une erreur technique est survenue. Veuillez réessayer.');
+});
+});
 	</script>
 
 {% endblock %}

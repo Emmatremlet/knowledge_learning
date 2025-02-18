@@ -43,16 +43,18 @@ class StripeController extends AbstractController
             return new JsonResponse(['error' => 'Utilisateur non authentifié.'], 401);
         }
 
-        $cart = $user->getPurchases();
+        $cart = $user->getPurchases()->filter(function ($purchase) {
+                return $purchase->getStatus() === 'pending';
+        });
+
         if (!$cart || count($cart) === 0) {
-            return $this->json(['error' => 'Votre panier est vide.'], 400);
+            return $this->json(['error' => 'Votre panier est vide ou ne contient que des achats déjà traités.'], 400);
         }
 
         $lineItems = [];
         foreach ($cart as $purchase) {
             $productName = null;
             $price = null;
-
             if ($purchase->getLesson()) {
                 $productName = $purchase->getLesson()->getName();
                 $price = $purchase->getLesson()->getPrice();
@@ -65,6 +67,7 @@ class StripeController extends AbstractController
             if (!$productName || $price <= 0) {
                 return new JsonResponse(['error' => 'Produit invalide détecté dans le panier.'], 400);
             }
+            
 
             $lineItems[] = [
                 'price_data' => [
