@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Service\StripeService;
+use App\Entity\Purchase;
+use App\Entity\User;
 use Psr\Log\LoggerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -106,6 +108,7 @@ class StripeController extends AbstractController
     #[Route("/checkout/success", name:"stripe_success", methods:"GET")]
     public function success(): RedirectResponse
     {
+        
         $this->addFlash('success', 'Votre paiement a été effectué avec succès !');
         return $this->redirectToRoute('user_lessons');
     }
